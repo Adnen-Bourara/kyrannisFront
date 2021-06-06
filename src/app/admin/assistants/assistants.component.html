@@ -176,75 +176,58 @@
     <button
       type="button"
       class="close"
-      (click)="modal.dismiss('Cross click')"
+      (click)="modal.dismiss('NewAssistant')"
       aria-label="Close"
     >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body" tabindex="0" ngbAutofocus>
-    <form class="add-new-user modal-content pt-0" #assistantForm="ngForm">
+    <form class="add-new-user modal-content pt-0" #assistantAddForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-fullname"
             >Prénom</label
           >
           <input
-            [(ngModel)]="user.firstName"
+            [(ngModel)]="userToAdd.firstName"
             type="text"
             class="form-control dt-full-name"
-            id="basic-icon-default-fullname"
             placeholder="Doe"
             name="firstName"
             required
             aria-label="John Doe"
             aria-describedby="basic-icon-default-fullname2"
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Nom</label>
           <input
-            [(ngModel)]="user.lastName"
+            [(ngModel)]="userToAdd.lastName"
             type="text"
-            id="basic-icon-default-uname"
             class="form-control dt-uname"
             placeholder="Jhon"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="lastName"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-email">Email</label>
           <input
-            [(ngModel)]="user.email"
+            [(ngModel)]="userToAdd.email"
             type="text"
-            id="basic-icon-default-email"
             class="form-control dt-email"
             placeholder="john.doe@example.com"
             aria-label="john.doe@example.com"
             aria-describedby="basic-icon-default-email2"
             name="email"
-            [class.error]="assistantForm.submitted"
+
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
           <small class="form-text text-muted">
             You can use letters, numbers & periods
           </small>
@@ -254,64 +237,47 @@
             >Mobile</label
           >
           <input
-            [(ngModel)]="user.tel"
+            [(ngModel)]="userToAdd.tel"
             type="text"
-            id="basic-icon-default-uname"
             class="form-control dt-uname"
             placeholder="(+216)  XX XXX XXX"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="tel"
-            [class.error]="assistantForm.submitted"
+
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Poste</label>
           <input
-            [(ngModel)]="user.poste"
+            [(ngModel)]="userToAdd.poste"
             type="text"
-            id="basic-icon-default-uname"
             class="form-control dt-uname"
             placeholder="Jhon"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="username"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname"
             >Nom de Compte</label
           >
           <input
-            [(ngModel)]="user.username"
+            [(ngModel)]="userToAdd.username"
             type="text"
-            id="basic-icon-default-uname"
             class="form-control dt-uname"
             placeholder="Jhon"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="username"
-            [class.error]="assistantForm.submitted"
+
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
 
         <div class="form-group">
@@ -319,21 +285,16 @@
             >Mot de Passe</label
           >
           <input
-            [(ngModel)]="user.password"
+            [(ngModel)]="userToAdd.password"
             type="password"
-            id="basic-icon-default-uname"
             class="form-control dt-uname"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="user-name"
-            [class.error]="assistantForm.submitted"
+
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
       </div>
     </form>
@@ -341,9 +302,10 @@
   <div class="modal-footer">
     <button
       type="submit"
+      [disabled]="assistantAddForm.invalid"
       class="btn btn-success mr-1"
       (click)="onSaveAssistant()"
-      (click)="modal.close('Accept click')"
+      (click)="modal.close('NewAssistant')"
       rippleEffect
     >
       Sauvegarder
@@ -351,7 +313,7 @@
     <button
       type="reset"
       class="btn btn-outline-secondary"
-      (click)="modal.close('Accept click')"
+      (click)="modal.close('NewAssistant')"
       rippleEffect
     >
       Annuler
@@ -376,7 +338,7 @@
     </button>
   </div>
   <div class="modal-body" tabindex="0" ngbAutofocus>
-    <form class="add-new-user modal-content pt-0" #assistantForm="ngForm">
+    <form class="add-new-user modal-content pt-0" #assistantEditForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-fullname"
@@ -393,11 +355,6 @@
             aria-label="John Doe"
             aria-describedby="basic-icon-default-fullname2"
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Nom</label>
@@ -410,14 +367,9 @@
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="lastName"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-email">Email</label>
@@ -430,14 +382,9 @@
             aria-label="john.doe@example.com"
             aria-describedby="basic-icon-default-email2"
             name="email"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
           <small class="form-text text-muted">
             You can use letters, numbers & periods
           </small>
@@ -455,14 +402,8 @@
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="tel"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Poste</label>
@@ -475,59 +416,25 @@
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="poste"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
-            >Nom de Compte</label
-          >
+          <label class="form-label" for="basic-icon-default-uname">Nom de Compte</label>
           <input
             [(ngModel)]="editedUser.username"
             type="text"
-            id="basic-icon-default-uname"
+
             class="form-control dt-uname"
             placeholder="Jhon"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="username"
-            [class.error]="assistantForm.submitted"
             required
           />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
 
-        <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
-            >Mot de Passe</label
-          >
-          <input
-            [(ngModel)]="editedUser.password"
-            type="password"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="password"
-            [class.error]="assistantForm.submitted"
-            required
-          />
-          <span *ngIf="assistantForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
-        </div>
+
       </div>
     </form>
   </div>
@@ -535,6 +442,7 @@
     <button
       type="submit"
       class="btn btn-warning mr-1"
+      [disabled]="assistantEditForm.invalid"
       (click)="onEditAssistant()"
       (click)="modal.close('Accept click')"
       rippleEffect

@@ -15,7 +15,7 @@ import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
 export class AssistantsComponent implements OnInit {
   public breadcrumbDefault: Breadcrumb;
   public pageBasicText = 1;
-  public user = new User();
+  public userToAdd = new User();
   public editedUser = new User();
   coreConfig: any;
   menu: any;
@@ -96,7 +96,8 @@ export class AssistantsComponent implements OnInit {
   }
 
   async onSaveAssistant() {
-    await this.userService.saveAssistant(this.user);
+    await this.userService.saveAssistant(this.userToAdd);
+    this.ngOnInit();
   }
 
   GetInitials(firstname: string, lastname: string) {
@@ -104,6 +105,7 @@ export class AssistantsComponent implements OnInit {
     return initials.toUpperCase();
   }
   modalOpen(modalForm) {
+    console.log(modalForm);
     this.modalService.open(modalForm);
   }
 
@@ -114,8 +116,9 @@ export class AssistantsComponent implements OnInit {
     });
   }
 
-  async onEditAssistant() {
-  
+  async onEditAssistant(editedUser: User) {
+    await this.userService.editUser(this.editedUser);
+    this.ngOnInit();
   }
 
   async onDeleteUser(user: User) {

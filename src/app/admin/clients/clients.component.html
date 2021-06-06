@@ -154,7 +154,7 @@
     </button>
   </div>
   <div class="modal-body" tabindex="0" ngbAutofocus>
-    <form class="add-new-user modal-content pt-0" #clientForm="ngForm">
+    <form class="add-new-user modal-content pt-0" #clientAddForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-fullname"
@@ -162,16 +162,17 @@
           >
           <input
             [(ngModel)]="user.firstName"
+            #firstName="ngModel"
             type="text"
             class="form-control dt-full-name"
-            id="basic-icon-default-fullname"
             placeholder="Doe"
             name="firstName"
             required
             aria-label="John Doe"
+            [class.error]="clientAddForm.submitted && firstName.invalid"
             aria-describedby="basic-icon-default-fullname2"
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
+          <span *ngIf="clientAddForm.submitted && firstName.invalid" class="invalid-form">
             <small class="form-text text-success"
               >This field is required!</small
             >
@@ -182,20 +183,13 @@
           <input
             [(ngModel)]="user.lastName"
             type="text"
-            id="basic-icon-default-uname"
             class="form-control dt-uname"
             placeholder="Jhon"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="lastName"
-            [class.error]="clientForm.submitted"
             required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-email">Email</label>
@@ -208,14 +202,9 @@
             aria-label="john.doe@example.com"
             aria-describedby="basic-icon-default-email2"
             name="email"
-            [class.error]="clientForm.submitted"
             required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
           <small class="form-text text-muted">
             You can use letters, numbers & periods
           </small>
@@ -233,35 +222,25 @@
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="tel"
-            [class.error]="clientForm.submitted"
             required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
-        <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname">Company</label>
-          <input
-            [(ngModel)]="user.company"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="Jhon"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="username"
-            [class.error]="clientForm.submitted"
-            required
-          />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
-        </div>
+<!--        <div class="form-group">-->
+<!--          <label class="form-label" for="basic-icon-default-uname">Company</label>-->
+<!--          <input-->
+<!--            [(ngModel)]="user.company"-->
+<!--            type="text"-->
+<!--            id="basic-icon-default-uname"-->
+<!--            class="form-control dt-uname"-->
+<!--            placeholder="Jhon"-->
+<!--            aria-label="jdoe1"-->
+<!--            aria-describedby="basic-icon-default-uname2"-->
+<!--            name="username"-->
+<!--            required-->
+<!--          />-->
+
+<!--        </div>-->
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname"
             >Nom de Compte</label
@@ -275,14 +254,9 @@
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="username"
-            [class.error]="clientForm.submitted"
             required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
 
         <div class="form-group">
@@ -297,14 +271,8 @@
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="user-name"
-            [class.error]="clientForm.submitted"
             required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
       </div>
     </form>
@@ -312,6 +280,7 @@
   <div class="modal-footer">
     <button
       type="submit"
+      [disabled]="clientAddForm.invalid"
       class="btn btn-success mr-1"
       (click)="onSaveClient()"
       (click)="modal.close('Accept click')"
