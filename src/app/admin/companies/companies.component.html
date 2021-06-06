@@ -1,0 +1,155 @@
+<div class="row">
+  <h2 class="content-header-title col-4 float-left mb-0 border-right">
+    Gérer les Sociétés partenaires
+  </h2>
+  <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
+</div>
+<div>
+  <div class="panel-body">
+    <div class="container mt-3">
+      <div
+        class="
+          d-flex
+          align-items-center
+          justify-content-end
+          float-left
+          col-3
+          mt-1
+          mb-1
+        "
+      >
+        <label class="d-flex align-items-center"
+          >Search<input
+            type="search"
+            placeholder="Search"
+            class="form-control ml-25"
+        /></label>
+      </div>
+    
+    </div>
+  </div>
+  <div class="container mt-3">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th>Nom de la Société</th>
+                <th>Mail</th>
+                <th>Matricule Fiscale</th>
+                <th>Adress</th>
+                <th>Liste des Clients</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody class="table-striped">
+              <tr *ngFor="let a of listCompanies">
+                <td class="justify-content-center">
+                  <div class="avatar bg-light-success mr-1">
+                    <span class="avatar-content">{{
+                      GetInitials(a.firstName, a.lastName)
+                    }}</span>
+                  </div>
+                  {{ a.firstName }} {{ a.lastName }}
+                </td>
+                <td>{{ a.email }}</td>
+                <td>
+                  <div class="badge badge-info">{{ a.poste }}</div>
+                </td>
+                <td>
+                  <div class="btn-group">
+                    <div ngbDropdown>
+                      <button
+                        ngbDropdownToggle
+                        class="btn btn-flat-primary btn-sm"
+                        type="button"
+                        id="dropdownMenuButton300"
+                        rippleEffect
+                      >
+                        Clients Associés
+                      </button>
+                      <div
+                        ngbDropdownMenu
+                        aria-labelledby="dropdownMenuButton300"
+                      >
+                        <a
+                          *ngFor="let c of a.clients"
+                          ngbDropdownItem
+                          href="javascript:void(0)"
+                          >{{ c.name }}</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="btn-group">
+                    <div ngbDropdown container="body" class="dropdown">
+                      <button
+                        ngbDropdownToggle
+                        data-toggle="dropdown"
+                        class="dropdown-toggle btn btn-sm hide-arrow"
+                        type="button"
+                        id="dropdownMenuButton300"
+                        aria-expanded="true"
+                      >
+                        <span [data-feather]="'more-vertical'"></span>
+                      </button>
+                      <div
+                        ngbDropdownMenu
+                        aria-labelledby="dropdownMenuButton300"
+                      >
+                        <a
+                          ngbDropdownItem
+                          href="javascript:void(0)"
+                          (click)="goToEditSideBar(a)"
+                          ><span [data-feather]="'edit'" class="mr-1"></span
+                          >Modifier</a
+                        >
+                        <a ngbDropdownItem href="javascript:void(0)"
+                          ><span [data-feather]="'delete'" class="mr-1"></span
+                          >Supprimer</a
+                        >
+                        <a ngbDropdownItem href="javascript:void(0)"
+                          ><span
+                            [data-feather]="'alert-octagon'"
+                            class="mr-1"
+                          ></span
+                          >Signaler</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="text-center">
+            <ngb-pagination
+              [collectionSize]="20"
+              [(page)]="pageBasicText"
+              aria-label="Custom pagination"
+              class="d-flex justify-content-around mt-3"
+            >
+              <ng-template ngbPaginationPrevious
+                ><span
+                  [data-feather]="'chevron-left'"
+                  [class]="'font-weight-bolde'"
+                ></span
+                >Prev
+              </ng-template>
+              <ng-template ngbPaginationNext
+                >Next<span
+                  [data-feather]="'chevron-right'"
+                  [class]="'font-weight-bolder'"
+                ></span>
+              </ng-template>
+            </ngb-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

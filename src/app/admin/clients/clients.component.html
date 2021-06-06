@@ -1,0 +1,680 @@
+
+<div class="row">
+  <h2 class="content-header-title col-3 float-left mb-0 border-right">
+    Gérer vos Clients
+  </h2>
+  <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
+</div>
+<div class="row">
+  <div class="col-12">
+    <div class="panel-body">
+      <div class="container mt-3">
+        <div
+          class="d-flex align-items-center justify-content-end float-left col-3 mt-1 mb-1"
+        >
+          <label class="d-flex align-items-center"
+            >Search<input
+              type="search"
+              placeholder="Search"
+              class="form-control ml-25"
+          /></label>
+        </div>
+        <button
+          type="button"
+          class="btn btn-relief-success float-right col-3 mt-1"
+          (click)="modalOpen(NewClient)"
+        >
+          Ajouter un Client
+        </button>
+      </div>
+    </div>
+    <div class="container mt-3">
+      <div class="panel panel-primary">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table *ngIf="clients" class="table">
+              <thead class="thead-light">
+                <tr>
+                  <th>Nom du Client</th>
+                  <th>Mail</th>
+                  <th>Liste Fichiers</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody class="table-striped">
+                <tr *ngFor="let c of listClients">
+                  <td class="justify-content-center">
+                    <div class="avatar bg-light-success mr-1">
+                      <span class="avatar-content">{{c.firstName}} {{c.lastName}}</span>
+                    </div>
+                    {{ c.fullName }}
+                  </td>
+                  <td>{{ c.mail }}</td>
+
+                  <td>
+                    <div class="btn-group">
+                      <div ngbDropdown>
+                        <button
+                          ngbDropdownToggle
+                          class="btn btn-flat-primary btn-sm"
+                          type="button"
+                          id="dropdownMenuButton300"
+                          rippleEffect
+                        >
+                          Fichiers Associés
+                        </button>
+                        <div
+                          ngbDropdownMenu
+                          aria-labelledby="dropdownMenuButton300"
+                        >
+                          <a
+                            *ngFor="let f of c.fichiers"
+                            ngbDropdownItem
+                            href="javascript:void(0)"
+                            >{{ f.name }}</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="btn-group">
+                      <div ngbDropdown container="body" class="dropdown">
+                        <button
+                          ngbDropdownToggle
+                          data-toggle="dropdown"
+                          class="dropdown-toggle btn btn-sm hide-arrow"
+                          type="button"
+                          id="dropdownMenuButton300"
+                          aria-expanded="true"
+                        >
+                          <span [data-feather]="'more-vertical'"></span>
+                        </button>
+                        <div
+                          ngbDropdownMenu
+                          aria-labelledby="dropdownMenuButton300"
+                        >
+                          <a ngbDropdownItem (click)="goToModal(c)" (click)="modalOpenLG(EditAssistant)"
+                            ><span [data-feather]="'edit'" class="mr-1"></span
+                            >Edit</a
+                          >
+                          <a ngbDropdownItem (click)="onDeleteClient(c)"
+                            ><span [data-feather]="'delete'" class="mr-1"></span
+                            >Delete</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="text-center">
+              <ngb-pagination
+                [collectionSize]="50"
+                [(page)]="pageBasicText"
+                aria-label="Custom pagination"
+                class="d-flex justify-content-around mt-3"
+              >
+                <ng-template ngbPaginationPrevious
+                  ><span
+                    [data-feather]="'chevron-left'"
+                    [class]="'font-weight-bolde'"
+                  ></span
+                  >Prev
+                </ng-template>
+                <ng-template ngbPaginationNext
+                  >Next<span
+                    [data-feather]="'chevron-right'"
+                    [class]="'font-weight-bolder'"
+                  ></span>
+                </ng-template>
+              </ngb-pagination>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+<ng-template #NewClient let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-success" id="myModalLabel1">
+      Ajouter un Client
+    </h4>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss('Cross click')"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <form class="add-new-user modal-content pt-0" #clientForm="ngForm">
+      <div class="modal-body flex-grow-1">
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-fullname"
+            >Prénom</label
+          >
+          <input
+            [(ngModel)]="user.firstName"
+            type="text"
+            class="form-control dt-full-name"
+            id="basic-icon-default-fullname"
+            placeholder="Doe"
+            name="firstName"
+            required
+            aria-label="John Doe"
+            aria-describedby="basic-icon-default-fullname2"
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname">Nom</label>
+          <input
+            [(ngModel)]="user.lastName"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="lastName"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-email">Email</label>
+          <input
+            [(ngModel)]="user.email"
+            type="text"
+            id="basic-icon-default-email"
+            class="form-control dt-email"
+            placeholder="john.doe@example.com"
+            aria-label="john.doe@example.com"
+            aria-describedby="basic-icon-default-email2"
+            name="email"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+          <small class="form-text text-muted">
+            You can use letters, numbers & periods
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Mobile</label
+          >
+          <input
+            [(ngModel)]="user.tel"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="(+216)  XX XXX XXX"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="tel"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname">Company</label>
+          <input
+            [(ngModel)]="user.company"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="username"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Nom de Compte</label
+          >
+          <input
+            [(ngModel)]="user.username"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="username"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Mot de Passe</label
+          >
+          <input
+            [(ngModel)]="user.password"
+            type="password"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="user-name"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      class="btn btn-success mr-1"
+      (click)="onSaveClient()"
+      (click)="modal.close('Accept click')"
+      rippleEffect
+    >
+      Sauvegarder
+    </button>
+    <button
+      type="reset"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('Accept click')"
+      rippleEffect
+    >
+      Annuler
+    </button>
+  </div>
+</ng-template>
+<!-- / Modal -->
+
+<!-- Modal -->
+<ng-template #EditClient let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-warning" id="myModalLabel1">
+      Modifier un Assistant
+    </h4>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss('Cross click')"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <form class="add-new-user modal-content pt-0" #clientForm="ngForm">
+      <div class="modal-body flex-grow-1">
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-fullname"
+            >Prénom</label
+          >
+          <input
+            [(ngModel)]="user.firstName"
+            type="text"
+            class="form-control dt-full-name"
+            id="basic-icon-default-fullname"
+            placeholder="Doe"
+            name="firstName"
+            required
+            aria-label="John Doe"
+            aria-describedby="basic-icon-default-fullname2"
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname">Nom</label>
+          <input
+            [(ngModel)]="user.lastName"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="lastName"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-email">Email</label>
+          <input
+            [(ngModel)]="user.email"
+            type="text"
+            id="basic-icon-default-email"
+            class="form-control dt-email"
+            placeholder="john.doe@example.com"
+            aria-label="john.doe@example.com"
+            aria-describedby="basic-icon-default-email2"
+            name="email"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+          <small class="form-text text-muted">
+            You can use letters, numbers & periods
+          </small>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Mobile</label
+          >
+          <input
+            [(ngModel)]="user.tel"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="(+216)  XX XXX XXX"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="tel"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname">Poste</label>
+          <input
+            [(ngModel)]="user.poste"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="username"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Nom de Compte</label
+          >
+          <input
+            [(ngModel)]="user.username"
+            type="text"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="username"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Mot de Passe</label
+          >
+          <input
+            [(ngModel)]="user.password"
+            type="password"
+            id="basic-icon-default-uname"
+            class="form-control dt-uname"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="user-name"
+            [class.error]="clientForm.submitted"
+            required
+          />
+          <span *ngIf="clientForm.submitted" class="invalid-form">
+            <small class="form-text text-success"
+              >This field is required!</small
+            >
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      class="btn btn-warning mr-1"
+      (click)="submit()"
+      (click)="modal.close('Accept click')"
+      rippleEffect
+    >
+      Sauvegarder
+    </button>
+    <button
+      type="reset"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('Accept click')"
+      rippleEffect
+    >
+      Annuler
+    </button>
+  </div>
+</ng-template>
+<!-- / Modal -->
+
+<!-- Modal -->
+<ng-template #ProfileClient let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-warning" id="myModalLabel1">Informations</h4>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss('Cross click')"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div>
+    <div class="card user-card">
+      <div class="card-body">
+        <div class="row">
+          <div
+            class="
+              col-xl-6 col-lg-12
+              d-flex
+              flex-column
+              justify-content-between
+              border-container-lg
+            "
+          >
+            <div class="user-avatar-section">
+              <div class="d-flex justify-content-start">
+                <div>
+                  <img
+                    class="img-fluid rounded"
+                    src="../../../assets/images/avatars/2.png"
+                    height="104"
+                    width="104"
+                    alt="User avatar"
+                  />
+                </div>
+                <ng-template #customAvatar>
+                  <div class="mr-1 ml-0">
+                    <div
+                      [ngClass]="{
+                        'bg-light-success': data.status == 'active',
+                        'bg-light-secondary': data.status == 'inactive',
+                        'bg-light-warning': data.status == 'pending'
+                      }"
+                      class="rounded p-3"
+                    >
+                      <h2
+                        [ngClass]="{
+                          'text-success': data.status == 'active',
+                          'text-secondary': data.status == 'inactive',
+                          'text-warning': data.status == 'pending'
+                        }"
+                        class="m-0"
+                      >
+                        initials
+                      </h2>
+                    </div>
+                  </div>
+                </ng-template>
+                <div class="d-flex flex-column ml-1">
+                  <div class="user-info mb-1">
+                    <h4 class="mb-0" >Full Name</h4>
+                    <span class="card-text">Email</span>
+                  </div>
+                  <div class="d-flex flex-wrap">
+                    <a class="btn btn-primary" rippleEffect>Editer</a>
+                    <button class="btn btn-outline-danger ml-1" rippleEffect>
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center user-total-numbers">
+              <div class="d-flex align-items-center">
+                <div class="color-box bg-light-success">
+                  <i
+                    [data-feather]="'trending-up'"
+                    [class]="'text-success'"
+                  ></i>
+                </div>
+                <div class="ml-1 mt-2">
+                  <h5 class="mb-0">24</h5>
+                  <small>Nombre de Fichiers</small>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
+            <div class="user-info-wrapper">
+              <div class="d-flex flex-wrap">
+                <div class="user-info-title">
+                  <i data-feather="user" class="mr-1"></i>
+                  <span class="card-text user-info-title font-weight-bold mb-0"
+                    >Username :</span
+                  >
+                </div>
+                <p class="card-text mb-0">User</p>
+              </div>
+              <div class="d-flex flex-wrap my-50">
+                <div class="user-info-title">
+                  <i data-feather="check" class="mr-1"></i>
+                  <span class="card-text user-info-title font-weight-bold mb-0"
+                    >Status :</span
+                  >
+                </div>
+                <p class="card-text mb-0 ">Status</p>
+              </div>
+              <div class="d-flex flex-wrap my-50">
+                <div class="user-info-title">
+                  <i data-feather="star" class="mr-1"></i>
+                  <span class="card-text user-info-title font-weight-bold mb-0"
+                    >Role :</span
+                  >
+                </div>
+                <p class="card-text mb-0">Role</p>
+              </div>
+              <div class="d-flex flex-wrap my-50">
+                <div class="user-info-title">
+                  <i data-feather="flag" class="mr-1"></i>
+                  <span class="card-text user-info-title font-weight-bold mb-0"
+                    >Country :</span
+                  >
+                </div>
+                <p class="card-text mb-0">England</p>
+              </div>
+              <div class="d-flex flex-wrap">
+                <div class="user-info-title">
+                  <i data-feather="phone" class="mr-1"></i>
+                  <span class="card-text user-info-title font-weight-bold mb-0"
+                    >Contact :</span
+                  >
+                </div>
+                <p class="card-text mb-0">Contact</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="reset"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('Accept click')"
+      rippleEffect
+    >
+      Quitter
+    </button>
+  </div>
+</ng-template>
+<!-- / Modal -->
