@@ -87,7 +87,7 @@ export class LoginComponent implements OnInit {
     // redirect to home page
     setTimeout(() => {
       if (this.user.role == "SuperAdmin")
-        this._router.navigate(["/admin/clients"]);
+        this._router.navigate(["/admin/assistants"]);
       else if (this.user.role == "Assistant")
         this._router.navigate(["/assistants/clients"]);
       else if (this.user.role == "Client")

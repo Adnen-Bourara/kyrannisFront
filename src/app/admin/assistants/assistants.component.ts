@@ -6,8 +6,8 @@ import { CoreMenuService } from "@core/components/core-menu/core-menu.service";
 import { CoreConfigService } from "@core/services/config.service";
 import { User } from "app/utils/common/login/user";
 import { UserServiceService } from "app/utils/common/login/user-service.service";
-import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
-import {Router} from '@angular/router';
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-assistants",
@@ -22,7 +22,9 @@ export class AssistantsComponent implements OnInit {
   menu: any;
   id: any;
   listAssistants: User[] = [];
-  response : any;
+  response: any;
+  confirmedPassword: String;
+  editedUserPassword: String;
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
@@ -30,7 +32,7 @@ export class AssistantsComponent implements OnInit {
     private _coreConfigService: CoreConfigService,
     private userService: UserServiceService,
     private modalService: NgbModal,
-    private _router: Router,
+    private _router: Router
   ) {
     this.menu = adminMenu;
     this._coreConfigService.setConfig({
@@ -77,7 +79,7 @@ export class AssistantsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (localStorage.getItem('connected') == 'no')
+    if (localStorage.getItem("connected") == "no")
       this._router.navigate(["/login"]);
     this.onGetAssistants();
   }
@@ -98,13 +100,12 @@ export class AssistantsComponent implements OnInit {
 
   async goToModal(user: User) {
     this.editedUser = user;
-    this.response = '';
+    this.response = "";
   }
 
   async onSaveAssistant() {
     this.response = await this.userService.checkUserName(this.userToAdd);
-    if (this.response == 'username already used')
-      return;
+    if (this.response == "username already used") return;
 
     await this.userService.saveAssistant(this.userToAdd);
     this.ngOnInit();
@@ -118,6 +119,10 @@ export class AssistantsComponent implements OnInit {
     console.log(modalForm);
     this.modalService.open(modalForm);
   }
+  modalClose(modalForm) {
+    console.log(modalForm);
+    this.modalService.dismissAll(modalForm);
+  }
 
   modalOpenLG(modalLG) {
     this.modalService.open(modalLG, {
@@ -128,16 +133,22 @@ export class AssistantsComponent implements OnInit {
 
   async onEditAssistant(editedUser: User) {
     this.response = await this.userService.checkUserName(this.editedUser);
-    if (this.response == 'username already used')
-      return;
+    if (this.response == "username already used") return;
     await this.userService.editUser(this.editedUser);
     this.ngOnInit();
   }
 
   async onDeleteUser(user: User) {
-    if(confirm("Are you sure to delete this company")) {
+    if (confirm("Are you sure to delete this company")) {
       this.userService.deleteUser(user.id);
       this.ngOnInit();
     }
+  }
+
+  async onChangePassword() {
+    if (this.editedUserPassword == this.confirmedPassword) {
+      this.onEditAssistant;
+      console.log("changed");
+    } else console.log("Not Confirmed");
   }
 }

@@ -41,6 +41,7 @@ export class FileUploaderComponent implements OnInit {
     private _coreMenuService: CoreMenuService,
     private _coreConfigService: CoreConfigService,
     private router: Router
+
   ) {
     let queryString = this.router.url;
     console.log(queryString);
@@ -83,6 +84,9 @@ export class FileUploaderComponent implements OnInit {
    */
   ngOnInit(): void {
     // content header
+    if (localStorage.getItem('connected') == 'no')
+    this.router.navigate(["/login"]);
+    
     this.contentHeader = {
       headerTitle: "Envoyer vos Fichiers",
       actionButton: true,

@@ -31,6 +31,8 @@ export class ClientsComponent implements OnInit {
   selectedCompany: any;
   selectedAssistant: any;
   response : any;
+  editedUserPassword: any;
+  confirmedPassword: any;
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
@@ -159,6 +161,13 @@ export class ClientsComponent implements OnInit {
       this.ngOnInit();
 
     }
+  }
+
+  async onChangePassword() {
+    if (this.editedUserPassword == this.confirmedPassword) {
+      this.OnEditClient;
+      console.log("changed");
+    } else console.log("Not Confirmed");
   }
 
 }

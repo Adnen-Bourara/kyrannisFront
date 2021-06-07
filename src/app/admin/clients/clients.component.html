@@ -86,6 +86,14 @@
                       ><span [data-feather]="'edit'" class="mr-1"></span
                       >Modifier</a
                       >
+                      <a
+                              ngbDropdownItem
+                              (click)="modalOpen(ChangePassword)"
+                              (click)="goToModal(a)"
+                      ><span [data-feather]="'edit'" class="mr-1"></span
+                      >Changer Mot de Passe</a
+                      >
+                      
                       <a ngbDropdownItem (click)="onDeleteClient(a)"
                       ><span [data-feather]="'delete'" class="mr-1"></span
                       >Supprimer</a
@@ -93,7 +101,7 @@
 
                       <a
                               ngbDropdownItem
-                              (click)="modalOpenLG(ProfileAssistant)"
+                              (click)="modalOpenLG(ProfileClient)"
                               (click)="goToModal(a)"
                       ><span [data-feather]="'award'" class="mr-1"></span
                       >Profil</a
@@ -401,7 +409,7 @@
           />
         </div>
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname">Poste</label>
+          <label class="form-label" for="basic-icon-default-uname">Poste dans la Société mère</label>
           <input
                   [(ngModel)]="userToEdit.poste"
                   type="text"
@@ -491,159 +499,206 @@
     </button>
   </div>
 </ng-template>
-<!-- / Modal -->
 
-<!-- Modal -->
-<ng-template #ProfileAssistant let-modal>
+<!-- / Modal -->
+<ng-template #ProfileClient let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-warning" id="myModalLabel1">Informations</h4>
     <button
-            type="button"
-            class="close"
-            (click)="modal.dismiss('Cross click')"
-            aria-label="Close"
+      type="button"
+      class="close"
+      (click)="modal.dismiss('Cross click')"
+      aria-label="Close"
     >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div>
-    <div class="card user-card">
-      <div class="card-body">
-        <div class="row">
-          <div
-                  class="
-              col-xl-6 col-lg-12
-              d-flex
-              flex-column
-              justify-content-between
-              border-container-lg
-            "
-          >
-            <div class="user-avatar-section">
-              <div class="d-flex justify-content-start">
-                <div>
-                  <img
-                          class="img-fluid rounded"
-                          src="../../../assets/images/avatars/2.png"
-                          height="104"
-                          width="104"
-                          alt="User avatar"
-                  />
-                </div>
-                <ng-template #customAvatar>
-                  <div class="mr-1 ml-0">
-                    <div
-                            [ngClass]="{
-                        'bg-light-success': data.status == 'active',
-                        'bg-light-secondary': data.status == 'inactive',
-                        'bg-light-warning': data.status == 'pending'
-                      }"
-                            class="rounded p-3"
-                    >
-                      <h2
-                              [ngClass]="{
-                          'text-success': data.status == 'active',
-                          'text-secondary': data.status == 'inactive',
-                          'text-warning': data.status == 'pending'
+  <div class="content-wrapper">
+      <div class="card user-card">
+        <div class="card-body">
+          <div class="row">
+            <div
+              class="
+                col-xl-6 col-lg-12
+                d-flex
+                flex-column
+                justify-content-between
+                border-container-lg
+              "
+            >
+              <div class="user-avatar-section">
+                <div class="d-flex justify-content-start">
+                  <div>
+                    <img
+                      class="img-fluid rounded"
+                      src="../../../assets/images/avatars/2.png"
+                      height="104"
+                      width="104"
+                      alt="User avatar"
+                    />
+                  </div>
+                  <ng-template #customAvatar>
+                    <div class="mr-1 ml-0">
+                      <div
+                        [ngClass]="{
+                          'bg-light-success': data.status == 'active',
+                          'bg-light-secondary': data.status == 'inactive',
+                          'bg-light-warning': data.status == 'pending'
                         }"
-                              class="m-0"
+                        class="rounded p-3"
                       >
-                        initials
-                      </h2>
+                        <h2
+                          [ngClass]="{
+                            'text-success': data.status == 'active',
+                            'text-secondary': data.status == 'inactive',
+                            'text-warning': data.status == 'pending'
+                          }"
+                          class="m-0"
+                        >
+                          initials
+                        </h2>
+                      </div>
+                    </div>
+                  </ng-template>
+                  <div class="d-flex flex-column ml-1">
+                    <div class="user-info mb-1">
+                      <h4 class="mb-0">
+                        {{ userToEdit.firstName }} {{ userToEdit.lastName }}
+                      </h4>
+                      <span class="card-text">{{ userToEdit.email }}</span>
+                    </div>
+                    <div class="d-flex flex-wrap">
+                      <button
+                        (click)="modalClose(ProfileAssistant)"
+                        (click)="modalOpen(EditAssistant)"
+                        (click)="goToModal(editedUser)"
+                        class="btn btn-primary"
+                        rippleEffect
+                      >
+                        Editer
+                      </button>
+                      <button
+                        (click)="onDeleteUser(a)"
+                        class="btn btn-outline-danger ml-1"
+                        rippleEffect
+                      >
+                        Supprimer
+                      </button>
                     </div>
                   </div>
-                </ng-template>
-                <div class="d-flex flex-column ml-1">
-                  <div class="user-info mb-1">
-                    <h4 class="mb-0" >Full Name</h4>
-                    <span class="card-text">Email</span>
+                </div>
+              </div>
+              <div class="d-flex align-items-center user-total-numbers">
+                <div class="d-flex align-items-center mt-2">
+                  <div class="color-box bg-light-success">
+                    <i
+                      [data-feather]="'trending-up'"
+                      [class]="'text-success'"
+                    ></i>
                   </div>
-                  <div class="d-flex flex-wrap">
-                    <a class="btn btn-primary" rippleEffect>Editer</a>
-                    <button class="btn btn-outline-danger ml-1" rippleEffect>
-                      Supprimer
-                    </button>
+                  <div class="ml-1 mt-2">
+                    <h5 class="mb-0">24</h5>
+                    <small>Nombre de Fichiers</small>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="d-flex align-items-center user-total-numbers">
-              <div class="d-flex align-items-center">
-                <div class="color-box bg-light-success">
-                  <i
-                          [data-feather]="'trending-up'"
-                          [class]="'text-success'"
-                  ></i>
+            <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
+              <div class="user-info-wrapper">
+                <div class="d-flex flex-wrap">
+                  <div class="user-info-title">
+                    <i data-feather="user" class="mr-1"></i>
+                    <span
+                      class="card-text user-info-title font-weight-bold mb-0"
+                      >Username :</span
+                    >
+                  </div>
+                  <p class="card-text ml-2 mb-0 ">{{ userToEdit.username }}</p>
                 </div>
-                <div class="ml-1 mt-2">
-                  <h5 class="mb-0">24</h5>
-                  <small>Nombre de Fichiers</small>
+                <div class="d-flex flex-wrap my-50">
+                  <div class="user-info-title">
+                    <i data-feather="check" class="mr-1"></i>
+                    <span
+                      class="card-text user-info-title font-weight-bold mb-0"
+                      >Status &nbsp;&nbsp; :</span
+                    >
+                  </div>
+                  <p class="card-text mb-0 ml-2">Active</p>
                 </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
-            <div class="user-info-wrapper">
-              <div class="d-flex flex-wrap">
-                <div class="user-info-title">
-                  <i data-feather="user" class="mr-1"></i>
-                  <span class="card-text user-info-title font-weight-bold mb-0"
-                  >Username :</span
-                  >
+                <div class="d-flex flex-wrap my-50">
+                  <div class="user-info-title">
+                    <i data-feather="star" class="mr-1"></i>
+                    <span
+                      class="card-text user-info-title font-weight-bold mb-0"
+                      >Poste &nbsp; &nbsp; :</span
+                    >
+                  </div>
+                  <p class="card-text ml-2 mb-0">{{ userToEdit.poste }}</p>
                 </div>
-                <p class="card-text mb-0">User</p>
-              </div>
-              <div class="d-flex flex-wrap my-50">
-                <div class="user-info-title">
-                  <i data-feather="check" class="mr-1"></i>
-                  <span class="card-text user-info-title font-weight-bold mb-0"
-                  >Status :</span
-                  >
+                <div class="d-flex flex-wrap my-50">
+                  <div class="user-info-title">
+                    <i data-feather="flag" class="mr-1"></i>
+                    <span
+                      class="card-text user-info-title font-weight-bold mb-0"
+                      >Country :</span
+                    >
+                  </div>
+                  <p class="card-text mb-0 ml-2">Tunisia</p>
                 </div>
-                <p class="card-text mb-0 ">Status</p>
-              </div>
-              <div class="d-flex flex-wrap my-50">
-                <div class="user-info-title">
-                  <i data-feather="star" class="mr-1"></i>
-                  <span class="card-text user-info-title font-weight-bold mb-0"
-                  >Role :</span
-                  >
+                <div class="d-flex flex-wrap">
+                  <div class="user-info-title">
+                    <i data-feather="phone" class="mr-1"></i>
+                    <span
+                      class="card-text user-info-title font-weight-bold mb-0"
+                      >Contact :</span
+                    >
+                  </div>
+                  <p class="card-text mb-0 ml-2">{{ userToEdit.tel }}</p>
                 </div>
-                <p class="card-text mb-0">Role</p>
-              </div>
-              <div class="d-flex flex-wrap my-50">
-                <div class="user-info-title">
-                  <i data-feather="flag" class="mr-1"></i>
-                  <span class="card-text user-info-title font-weight-bold mb-0"
-                  >Country :</span
-                  >
-                </div>
-                <p class="card-text mb-0">England</p>
-              </div>
-              <div class="d-flex flex-wrap">
-                <div class="user-info-title">
-                  <i data-feather="phone" class="mr-1"></i>
-                  <span class="card-text user-info-title font-weight-bold mb-0"
-                  >Contact :</span
-                  >
-                </div>
-                <p class="card-text mb-0">Contact</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
   <div class="modal-footer">
     <button
-            type="reset"
-            class="btn btn-outline-secondary"
-            (click)="modal.close('Accept click')"
-            rippleEffect
+      type="reset"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('Accept click')"
+      rippleEffect
     >
       Quitter
     </button>
   </div>
 </ng-template>
 <!-- / Modal -->
+
+  <!-- Modal -->
+  <ng-template #ChangePassword let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel1">Changer le mot de passe</h4>
+      <button type="button" class="close" (click)="modal.dismiss('Cross click')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+      <form action="#">
+        <label>Nouveau Mot de Passe</label>
+        <div class="form-group">
+          <input [(ngModel)]="userToEdit.password" name="editedUserPassword" type="password" placeholder="Nouveau Mot de Passe" class="form-control" />
+        </div>
+        <label>Confirmer le Nouveau Mot de Passe</label>
+        <div class="form-group">
+          <input name ="confirmedPassword" type="password" placeholder="" class="form-control" />
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary" (click)="modal.close('Accept click')" (click)="onChangePassword()" rippleEffect>
+        Sauvegarder
+      </button>
+    </div>
+  </ng-template>
+  <!-- / Modal -->
+

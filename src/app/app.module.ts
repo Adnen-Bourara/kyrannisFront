@@ -24,7 +24,7 @@ import { LayoutModule } from "app/layout/layout.module";
 import { SampleModule } from "app/main/sample/sample.module";
 import { LoginComponent } from "./utils/common/login/login.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { NgApexchartsModule } from "ng-apexcharts";
+
 
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
