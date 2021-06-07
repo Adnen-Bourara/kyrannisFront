@@ -7,6 +7,9 @@ import { adminMenu } from "../../menu/adminMenu";
 import { UserServiceService } from "app/utils/common/login/user-service.service";
 import { User } from "app/utils/common/login/user";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import {CompanyService} from '../companies/company.service';
+import {Company} from '../companies/company';
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-clients",
@@ -21,13 +24,22 @@ export class ClientsComponent implements OnInit {
   menu: any;
   listClients: User[] = [];
   id: any;
+  userToAdd = new User();
+  userToEdit = new User();
+  listCompanies : Company[];
+  listAssistants : User[];
+  selectedCompany: any;
+  selectedAssistant: any;
+  response : any;
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _coreMenuService: CoreMenuService,
     private _coreConfigService: CoreConfigService,
     private userService: UserServiceService,
-    private modalService : NgbModal
+    private companyService: CompanyService,
+    private modalService : NgbModal,
+    private _router: Router,
   ) {
     // Set the Menu
     this.menu = adminMenu;
@@ -74,8 +86,15 @@ export class ClientsComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    if (localStorage.getItem('connected') == 'no')
+      this._router.navigate(["/login"]);
+
+    this.userToAdd = new User();
+    this.userToEdit = new User();
     this.onGetClients();
+    this.listCompanies = await this.companyService.getCompanies();
+    this.listAssistants = await this.userService.getAssistants();
   }
 
   toggleSidebar(name): void {
@@ -87,15 +106,23 @@ export class ClientsComponent implements OnInit {
   }
 
   async goToModal(user: User) {
-    this.user = new User();
-    localStorage.setItem("idUser", user.id.toString());
-    this.id = localStorage.getItem("idUser");
-    this.user = await this.userService.getUser(this.id);
+ this.userToEdit = user;
+    this.response = '';
   }
 
   /////////////////
   async onSaveClient() {
-    await this.userService.saveClient(this.user)
+    console.log(this.userToAdd);
+    console.log(this.selectedCompany);
+    console.log(this.selectedAssistant);
+    this.response = await this.userService.checkUserName(this.userToAdd);
+    if (this.response == 'username already used')
+    return;
+
+    await this.userService.saveClient(this.userToAdd, this.selectedCompany, this.selectedAssistant);
+
+    console.log("done");
+ //  this.ngOnInit();
   }
 
   GetInitials(firstname: string, lastname: string) {
@@ -115,11 +142,23 @@ export class ClientsComponent implements OnInit {
   }
 
   async OnEditClient() {
-    
+    console.log(this.userToEdit);
+    console.log(this.selectedCompany);
+    console.log(this.selectedAssistant);
+    this.response = await this.userService.checkUserName(this.userToAdd);
+    if (this.response == 'username already used')
+      return;
+
+    await this.userService.editClient(this.userToEdit,this.selectedCompany,this.selectedCompany);
+    this.ngOnInit();
   }
 
-  async onDeleteClient(user : User){
-    
+  async onDeleteClient(user : User) {
+    if (confirm("Are you sure to delete this company")) {
+      await this.userService.deleteUser(user.id);
+      this.ngOnInit();
+
+    }
   }
 
 }

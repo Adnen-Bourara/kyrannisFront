@@ -4,6 +4,7 @@ import { CoreSidebarService } from "@core/components/core-sidebar/core-sidebar.s
 import { CoreConfigService } from "@core/services/config.service";
 import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/breadcrumb.component";
 import { assistantMenu } from "app/menu/assistantMenu";
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-assistants-clients",
@@ -20,7 +21,8 @@ export class AssistantsClientsComponent implements OnInit {
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _coreMenuService: CoreMenuService,
-    private _coreConfigService: CoreConfigService
+    private _coreConfigService: CoreConfigService,
+    private _router: Router,
   ) {
     // Set the Menu
     this.menu = assistantMenu;
@@ -67,7 +69,10 @@ export class AssistantsClientsComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (localStorage.getItem('connected') == 'no')
+      this._router.navigate(["/login"]);
+  }
 
   toggleSidebar(name): void {
     this._coreSidebarService.getSidebarRegistry(name).toggleOpen();

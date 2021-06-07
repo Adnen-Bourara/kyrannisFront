@@ -7,6 +7,7 @@ import { CoreConfigService } from "@core/services/config.service";
 import { User } from "app/utils/common/login/user";
 import { UserServiceService } from "app/utils/common/login/user-service.service";
 import { NgbModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-assistants",
@@ -21,13 +22,15 @@ export class AssistantsComponent implements OnInit {
   menu: any;
   id: any;
   listAssistants: User[] = [];
+  response : any;
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _coreMenuService: CoreMenuService,
     private _coreConfigService: CoreConfigService,
     private userService: UserServiceService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private _router: Router,
   ) {
     this.menu = adminMenu;
     this._coreConfigService.setConfig({
@@ -74,6 +77,8 @@ export class AssistantsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (localStorage.getItem('connected') == 'no')
+      this._router.navigate(["/login"]);
     this.onGetAssistants();
   }
 
@@ -93,9 +98,14 @@ export class AssistantsComponent implements OnInit {
 
   async goToModal(user: User) {
     this.editedUser = user;
+    this.response = '';
   }
 
   async onSaveAssistant() {
+    this.response = await this.userService.checkUserName(this.userToAdd);
+    if (this.response == 'username already used')
+      return;
+
     await this.userService.saveAssistant(this.userToAdd);
     this.ngOnInit();
   }
@@ -117,12 +127,17 @@ export class AssistantsComponent implements OnInit {
   }
 
   async onEditAssistant(editedUser: User) {
+    this.response = await this.userService.checkUserName(this.editedUser);
+    if (this.response == 'username already used')
+      return;
     await this.userService.editUser(this.editedUser);
     this.ngOnInit();
   }
 
   async onDeleteUser(user: User) {
-    this.userService.deleteUser(user.id);
-    this.ngOnInit();
+    if(confirm("Are you sure to delete this company")) {
+      this.userService.deleteUser(user.id);
+      this.ngOnInit();
+    }
   }
 }

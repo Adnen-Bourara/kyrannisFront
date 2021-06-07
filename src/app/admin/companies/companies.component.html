@@ -25,7 +25,13 @@
             class="form-control ml-25"
         /></label>
       </div>
-    
+      <button
+              type="button"
+              class="btn btn-relief-success float-right col-3 mt-1"
+              (click)="modalOpen(NewSociete)"
+      >
+        Ajouter une Société
+      </button>
     </div>
   </div>
   <div class="container mt-3">
@@ -37,8 +43,7 @@
               <tr>
                 <th>Nom de la Société</th>
                 <th>Mail</th>
-                <th>Matricule Fiscale</th>
-                <th>Adress</th>
+                <th>Address</th>
                 <th>Liste des Clients</th>
                 <th>Actions</th>
               </tr>
@@ -48,15 +53,13 @@
                 <td class="justify-content-center">
                   <div class="avatar bg-light-success mr-1">
                     <span class="avatar-content">{{
-                      GetInitials(a.firstName, a.lastName)
+                      GetInitials(a.name)
                     }}</span>
                   </div>
-                  {{ a.firstName }} {{ a.lastName }}
+                  {{ a.name}}
                 </td>
                 <td>{{ a.email }}</td>
-                <td>
-                  <div class="badge badge-info">{{ a.poste }}</div>
-                </td>
+                <td>{{ a.address }}</td>
                 <td>
                   <div class="btn-group">
                     <div ngbDropdown>
@@ -74,10 +77,9 @@
                         aria-labelledby="dropdownMenuButton300"
                       >
                         <a
-                          *ngFor="let c of a.clients"
+                          *ngFor="let c of a.listClient"
                           ngbDropdownItem
-                          href="javascript:void(0)"
-                          >{{ c.name }}</a
+                          >{{ c.firstName }} {{c.lastName}}</a
                         >
                       </div>
                     </div>
@@ -102,12 +104,12 @@
                       >
                         <a
                           ngbDropdownItem
-                          href="javascript:void(0)"
-                          (click)="goToEditSideBar(a)"
+                          (click)="goToModal(a)"
+                          (click)="modalOpen(editCompany)"
                           ><span [data-feather]="'edit'" class="mr-1"></span
                           >Modifier</a
                         >
-                        <a ngbDropdownItem href="javascript:void(0)"
+                        <a ngbDropdownItem (click)="onDeleteCompany(a.id)"
                           ><span [data-feather]="'delete'" class="mr-1"></span
                           >Supprimer</a
                         >
@@ -153,3 +155,208 @@
     </div>
   </div>
 </div>
+
+
+<!--ajout societe-->
+<ng-template #NewSociete let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-success" id="myModalLabel1">
+      Ajouter un Assistant
+    </h4>
+    <button
+            type="button"
+            class="close"
+            (click)="modal.dismiss('NewSociete')"
+            aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <form class="add-new-user modal-content pt-0" #societeAddForm="ngForm">
+      <div class="modal-body flex-grow-1">
+        <div class="form-group">
+          <label class="form-label"
+          >Nom</label
+          >
+          <input
+                  [(ngModel)]="newSociete.name"
+                  type="text"
+                  class="form-control dt-full-name"
+                  placeholder="Nom Societe"
+                  name="Nom"
+                  required
+                  aria-label="John Doe"
+                  aria-describedby="basic-icon-default-fullname2"
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-label" >Email</label>
+          <input
+                  [(ngModel)]="newSociete.email"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="email"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="email"
+                  required
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresse</label>
+          <input
+                  [(ngModel)]="newSociete.address"
+                  type="text"
+                  class="form-control dt-email"
+                  placeholder="Adresse"
+                  aria-label="Adresse"
+                  aria-describedby="basic-icon-default-email2"
+                  name="adress"
+
+                  required
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-label">taxRegistrationNumber</label>
+          <input
+                  [(ngModel)]="newSociete.taxRegistrationNumber"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder=""
+
+                  name="taxRegistrationNumber"
+
+                  required
+          />
+        </div>
+
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+            type="submit"
+            [disabled]="societeAddForm.invalid"
+            class="btn btn-success mr-1"
+            (click)="onSaveCompant()"
+            (click)="modal.close('NewAssistant')"
+            rippleEffect
+    >
+      Sauvegarder
+    </button>
+    <button
+            type="reset"
+            class="btn btn-outline-secondary"
+            (click)="modal.close('NewAssistant')"
+            rippleEffect
+    >
+      Annuler
+    </button>
+  </div>
+</ng-template>
+
+
+<!--modif societe-->
+<ng-template #editCompany let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-warning" id="myModalLabel1">
+      Modifier un Assistant
+    </h4>
+    <button
+            type="button"
+            class="close"
+            (click)="modal.dismiss('NewSociete')"
+            aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <form class="add-new-user modal-content pt-0" #societeModifForm="ngForm">
+      <div class="modal-body flex-grow-1">
+        <div class="form-group">
+          <label class="form-label"
+          >Nom</label
+          >
+          <input
+                  [(ngModel)]="modifSociete.name"
+                  type="text"
+                  class="form-control dt-full-name"
+                  placeholder="Nom Societe"
+                  name="Nom"
+                  required
+                  aria-label="John Doe"
+                  aria-describedby="basic-icon-default-fullname2"
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-label" >Email</label>
+          <input
+                  [(ngModel)]="modifSociete.email"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="email"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="email"
+                  required
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-label">Adresse</label>
+          <input
+                  [(ngModel)]="modifSociete.address"
+                  type="text"
+                  class="form-control dt-email"
+                  placeholder="Adresse"
+                  aria-label="Adresse"
+                  aria-describedby="basic-icon-default-email2"
+                  name="adress"
+                  required
+          />
+
+        </div>
+        <div class="form-group">
+          <label class="form-label">taxRegistrationNumber</label>
+          <input
+                  [(ngModel)]="modifSociete.taxRegistrationNumber"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder=""
+                  name="taxRegistrationNumber"
+                  required
+          />
+        </div>
+
+
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+            type="submit"
+            [disabled]="societeModifForm.invalid"
+            class="btn btn-success mr-1"
+            (click)="onEditCompany()"
+            (click)="modal.close('NewAssistant')"
+            rippleEffect
+    >
+      Sauvegarder
+    </button>
+    <button
+            type="reset"
+            class="btn btn-outline-secondary"
+            (click)="modal.close('NewAssistant')"
+            rippleEffect
+    >
+      Annuler
+    </button>
+  </div>
+</ng-template>

@@ -4,6 +4,7 @@ import { CoreConfigService } from "@core/services/config.service";
 import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/breadcrumb.component";
 import { adminMenu } from "app/menu/adminMenu";
 import { assistantMenu } from "app/menu/assistantMenu";
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-assistants-home",
@@ -16,7 +17,8 @@ export class AssistantsHomeComponent implements OnInit {
 
   constructor(
     private _coreConfigService: CoreConfigService,
-    private _coreMenuService: CoreMenuService
+    private _coreMenuService: CoreMenuService,
+    private _router: Router,
   ) {
     // Set the Menu
     this.menu = assistantMenu;
@@ -59,5 +61,8 @@ export class AssistantsHomeComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (localStorage.getItem('connected') == 'no')
+      this._router.navigate(["/login"]);
+  }
 }

@@ -30,7 +30,7 @@ export class CompanyService {
 
   async deleteCompany(id: number) {
     return this.httpClient
-      .delete(this.url + "/Company/delete/" + id)
+      .delete(this.url + "Company/delete/" + id)
       .toPromise();
   }
 }

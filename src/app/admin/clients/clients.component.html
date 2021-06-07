@@ -1,298 +1,315 @@
-
 <div class="row">
-  <h2 class="content-header-title col-3 float-left mb-0 border-right">
+  <h2 class="content-header-title col-4 float-left mb-0 border-right">
     Gérer vos Clients
   </h2>
   <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
 </div>
-<div class="row">
-  <div class="col-12">
-    <div class="panel-body">
-      <div class="container mt-3">
-        <div
-          class="d-flex align-items-center justify-content-end float-left col-3 mt-1 mb-1"
-        >
-          <label class="d-flex align-items-center"
-            >Search<input
-              type="search"
-              placeholder="Search"
-              class="form-control ml-25"
-          /></label>
-        </div>
-        <button
-          type="button"
-          class="btn btn-relief-success float-right col-3 mt-1"
-          (click)="modalOpen(NewClient)"
-        >
-          Ajouter un Client
-        </button>
-      </div>
-    </div>
+<div>
+  <div class="panel-body">
     <div class="container mt-3">
-      <div class="panel panel-primary">
-        <div class="panel-body">
-          <div class="table-responsive">
-            <table *ngIf="clients" class="table">
-              <thead class="thead-light">
-                <tr>
-                  <th>Nom du Client</th>
-                  <th>Mail</th>
-                  <th>Liste Fichiers</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody class="table-striped">
-                <tr *ngFor="let c of listClients">
-                  <td class="justify-content-center">
-                    <div class="avatar bg-light-success mr-1">
-                      <span class="avatar-content">{{c.firstName}} {{c.lastName}}</span>
-                    </div>
-                    {{ c.fullName }}
-                  </td>
-                  <td>{{ c.mail }}</td>
+      <div
+              class="
+          d-flex
+          align-items-center
+          justify-content-end
+          float-left
+          col-3
+          mt-1
+          mb-1
+        "
+      >
+        <label class="d-flex align-items-center"
+        >Search<input
+                type="search"
+                placeholder="Search"
+                class="form-control ml-25"
+        /></label>
+      </div>
+      <button
+              type="button"
+              class="btn btn-relief-success float-right col-3 mt-1"
+              (click)="modalOpen(NewClient)"
+      >
+        Ajouter un Client
+      </button>
+    </div>
+  </div>
+  <div class="container mt-3">
+    <div class="panel panel-primary">
+      <div class="panel-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light">
+            <tr>
+              <th>Nom du client</th>
+              <th>Email</th>
+              <th>societe</th>
+              <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody class="table-striped">
+            <tr *ngFor="let a of listClients">
+              <td class="justify-content-center">
+                <div class="avatar bg-light-success mr-1">
+                    <span class="avatar-content">{{
+                      GetInitials(a.firstName, a.lastName)
+                      }}</span>
+                </div>
+                {{ a.firstName }} {{ a.lastName }}
+              </td>
+              <td>{{ a.email }}</td>
+              <td>
+                <div class="badge badge-info">{{ a.company.name }}</div>
+              </td>
 
-                  <td>
-                    <div class="btn-group">
-                      <div ngbDropdown>
-                        <button
-                          ngbDropdownToggle
-                          class="btn btn-flat-primary btn-sm"
-                          type="button"
-                          id="dropdownMenuButton300"
-                          rippleEffect
-                        >
-                          Fichiers Associés
-                        </button>
-                        <div
-                          ngbDropdownMenu
-                          aria-labelledby="dropdownMenuButton300"
-                        >
-                          <a
-                            *ngFor="let f of c.fichiers"
-                            ngbDropdownItem
-                            href="javascript:void(0)"
-                            >{{ f.name }}</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="btn-group">
-                      <div ngbDropdown container="body" class="dropdown">
-                        <button
-                          ngbDropdownToggle
-                          data-toggle="dropdown"
-                          class="dropdown-toggle btn btn-sm hide-arrow"
-                          type="button"
-                          id="dropdownMenuButton300"
-                          aria-expanded="true"
-                        >
-                          <span [data-feather]="'more-vertical'"></span>
-                        </button>
-                        <div
-                          ngbDropdownMenu
-                          aria-labelledby="dropdownMenuButton300"
-                        >
-                          <a ngbDropdownItem (click)="goToModal(c)" (click)="modalOpenLG(EditAssistant)"
-                            ><span [data-feather]="'edit'" class="mr-1"></span
-                            >Edit</a
-                          >
-                          <a ngbDropdownItem (click)="onDeleteClient(c)"
-                            ><span [data-feather]="'delete'" class="mr-1"></span
-                            >Delete</a
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              <td>
+                <div class="btn-group">
+                  <div ngbDropdown container="body" class="dropdown">
+                    <button
+                            ngbDropdownToggle
+                            data-toggle="dropdown"
+                            class="dropdown-toggle btn btn-sm hide-arrow"
+                            type="button"
+                            id="dropdownMenuButton300"
+                            aria-expanded="true"
+                    >
+                      <span [data-feather]="'more-vertical'"></span>
+                    </button>
+                    <div
+                            ngbDropdownMenu
+                            aria-labelledby="dropdownMenuButton300"
+                    >
+                      <a
+                              ngbDropdownItem
+                              (click)="modalOpen(EditClient)"
+                              (click)="goToModal(a)"
+                      ><span [data-feather]="'edit'" class="mr-1"></span
+                      >Modifier</a
+                      >
+                      <a ngbDropdownItem (click)="onDeleteClient(a)"
+                      ><span [data-feather]="'delete'" class="mr-1"></span
+                      >Supprimer</a
+                      >
 
-            <div class="text-center">
-              <ngb-pagination
-                [collectionSize]="50"
-                [(page)]="pageBasicText"
-                aria-label="Custom pagination"
-                class="d-flex justify-content-around mt-3"
-              >
-                <ng-template ngbPaginationPrevious
-                  ><span
-                    [data-feather]="'chevron-left'"
-                    [class]="'font-weight-bolde'"
-                  ></span
-                  >Prev
-                </ng-template>
-                <ng-template ngbPaginationNext
-                  >Next<span
-                    [data-feather]="'chevron-right'"
-                    [class]="'font-weight-bolder'"
-                  ></span>
-                </ng-template>
-              </ngb-pagination>
-            </div>
+                      <a
+                              ngbDropdownItem
+                              (click)="modalOpenLG(ProfileAssistant)"
+                              (click)="goToModal(a)"
+                      ><span [data-feather]="'award'" class="mr-1"></span
+                      >Profil</a
+                      >
+                      <a ngbDropdownItem href="javascript:void(0)"
+                      ><span
+                              [data-feather]="'alert-octagon'"
+                              class="mr-1"
+                      ></span
+                      >Signaler</a
+                      >
+                    </div>
+                  </div>
+                </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+          <div class="text-center">
+            <ngb-pagination
+                    [collectionSize]="20"
+                    [(page)]="pageBasicText"
+                    aria-label="Custom pagination"
+                    class="d-flex justify-content-around mt-3"
+            >
+              <ng-template ngbPaginationPrevious
+              ><span
+                      [data-feather]="'chevron-left'"
+                      [class]="'font-weight-bolde'"
+              ></span
+              >Prev
+              </ng-template>
+              <ng-template ngbPaginationNext
+              >Next<span
+                      [data-feather]="'chevron-right'"
+                      [class]="'font-weight-bolder'"
+              ></span>
+              </ng-template>
+            </ngb-pagination>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- Modal -->
+<!-- addClient -->
 <ng-template #NewClient let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-success" id="myModalLabel1">
       Ajouter un Client
     </h4>
     <button
-      type="button"
-      class="close"
-      (click)="modal.dismiss('Cross click')"
-      aria-label="Close"
+            type="button"
+            class="close"
+            (click)="modal.dismiss('NewAssistant')"
+            aria-label="Close"
     >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body" tabindex="0" ngbAutofocus>
-    <form class="add-new-user modal-content pt-0" #clientAddForm="ngForm">
+    <form class="add-new-user modal-content pt-0" #NewClientForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-fullname"
-            >Prénom</label
+          >Prénom</label
           >
           <input
-            [(ngModel)]="user.firstName"
-            #firstName="ngModel"
-            type="text"
-            class="form-control dt-full-name"
-            placeholder="Doe"
-            name="firstName"
-            required
-            aria-label="John Doe"
-            [class.error]="clientAddForm.submitted && firstName.invalid"
-            aria-describedby="basic-icon-default-fullname2"
+                  [(ngModel)]="userToAdd.firstName"
+                  type="text"
+                  class="form-control dt-full-name"
+                  placeholder="Doe"
+                  name="firstName"
+                  required
+                  aria-label="John Doe"
+                  aria-describedby="basic-icon-default-fullname2"
           />
-          <span *ngIf="clientAddForm.submitted && firstName.invalid" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Nom</label>
           <input
-            [(ngModel)]="user.lastName"
-            type="text"
-            class="form-control dt-uname"
-            placeholder="Jhon"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="lastName"
-            required
+                  [(ngModel)]="userToAdd.lastName"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Jhon"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="lastName"
+                  required
           />
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-email">Email</label>
           <input
-            [(ngModel)]="user.email"
-            type="text"
-            id="basic-icon-default-email"
-            class="form-control dt-email"
-            placeholder="john.doe@example.com"
-            aria-label="john.doe@example.com"
-            aria-describedby="basic-icon-default-email2"
-            name="email"
-            required
-          />
+                  [(ngModel)]="userToAdd.email"
+                  type="text"
+                  class="form-control dt-email"
+                  placeholder="john.doe@example.com"
+                  aria-label="john.doe@example.com"
+                  aria-describedby="basic-icon-default-email2"
+                  name="email"
 
+                  required
+          />
           <small class="form-text text-muted">
             You can use letters, numbers & periods
           </small>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname"
-            >Mobile</label
+          >Mobile</label
           >
           <input
-            [(ngModel)]="user.tel"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="(+216)  XX XXX XXX"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="tel"
-            required
-          />
+                  [(ngModel)]="userToAdd.tel"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="(+216)  XX XXX XXX"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="tel"
 
+                  required
+          />
         </div>
-<!--        <div class="form-group">-->
-<!--          <label class="form-label" for="basic-icon-default-uname">Company</label>-->
-<!--          <input-->
-<!--            [(ngModel)]="user.company"-->
-<!--            type="text"-->
-<!--            id="basic-icon-default-uname"-->
-<!--            class="form-control dt-uname"-->
-<!--            placeholder="Jhon"-->
-<!--            aria-label="jdoe1"-->
-<!--            aria-describedby="basic-icon-default-uname2"-->
-<!--            name="username"-->
-<!--            required-->
-<!--          />-->
-
-<!--        </div>-->
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
-            >Nom de Compte</label
+          <label class="form-label" for="basic-icon-default-uname">Company</label>
+          <select
+                  [(ngModel)]="selectedCompany"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Select Company"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+                  required
           >
-          <input
-            [(ngModel)]="user.username"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="Jhon"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="username"
-            required
-          />
+          <option *ngFor=" let company of listCompanies" [value]="company.id">{{company.name}}</option>
+          </select>
+        </div>
 
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname">Assistant</label>
+          <select
+                  [(ngModel)]="selectedAssistant"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Select Company"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+                  required
+          >
+            <option *ngFor=" let assistant of listAssistants" [value]="assistant.id">{{assistant.firstName}} {{assistant.lastName}}</option>
+          </select>
         </div>
 
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname"
-            >Mot de Passe</label
+          >Nom de Compte</label
           >
           <input
-            [(ngModel)]="user.password"
-            type="password"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="user-name"
-            required
+                  [(ngModel)]="userToAdd.username"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Jhon"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+
+                  required
           />
+          <span *ngIf="response == 'username already used' " class="invalid-form">
+            <small class="form-text text-success"
+            >This username is already used!</small
+            >
+          </span>
+
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+          >Mot de Passe</label
+          >
+          <input
+                  [(ngModel)]="userToAdd.password"
+                  type="password"
+                  class="form-control dt-uname"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="user-name"
+
+                  required
+          />
+
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer">
     <button
-      type="submit"
-      [disabled]="clientAddForm.invalid"
-      class="btn btn-success mr-1"
-      (click)="onSaveClient()"
-      (click)="modal.close('Accept click')"
-      rippleEffect
+            type="submit"
+            [disabled]="NewClientForm.invalid"
+            class="btn btn-success mr-1"
+            (click)="onSaveClient()"
+
+            rippleEffect
     >
       Sauvegarder
     </button>
     <button
-      type="reset"
-      class="btn btn-outline-secondary"
-      (click)="modal.close('Accept click')"
-      rippleEffect
+            type="reset"
+            class="btn btn-outline-secondary"
+            (click)="modal.close('NewAssistant')"
+            rippleEffect
     >
       Annuler
     </button>
@@ -300,192 +317,175 @@
 </ng-template>
 <!-- / Modal -->
 
-<!-- Modal -->
+<!-- modifClient -->
 <ng-template #EditClient let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-warning" id="myModalLabel1">
-      Modifier un Assistant
+      Modifier un Client
     </h4>
     <button
-      type="button"
-      class="close"
-      (click)="modal.dismiss('Cross click')"
-      aria-label="Close"
+            type="button"
+            class="close"
+            (click)="modal.dismiss('Cross click')"
+            aria-label="Close"
     >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div class="modal-body" tabindex="0" ngbAutofocus>
-    <form class="add-new-user modal-content pt-0" #clientForm="ngForm">
+    <form class="add-new-user modal-content pt-0" #EditClientForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-fullname"
-            >Prénom</label
+          >Prénom</label
           >
           <input
-            [(ngModel)]="user.firstName"
-            type="text"
-            class="form-control dt-full-name"
-            id="basic-icon-default-fullname"
-            placeholder="Doe"
-            name="firstName"
-            required
-            aria-label="John Doe"
-            aria-describedby="basic-icon-default-fullname2"
+                  [(ngModel)]="userToEdit.firstName"
+                  type="text"
+                  class="form-control dt-full-name"
+                  id="basic-icon-default-fullname"
+                  placeholder="Doe"
+                  name="firstName"
+                  required
+                  aria-label="John Doe"
+                  aria-describedby="basic-icon-default-fullname2"
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Nom</label>
           <input
-            [(ngModel)]="user.lastName"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="Jhon"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="lastName"
-            [class.error]="clientForm.submitted"
-            required
+                  [(ngModel)]="userToEdit.lastName"
+                  type="text"
+                  id="basic-icon-default-uname"
+                  class="form-control dt-uname"
+                  placeholder="Jhon"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="lastName"
+                  required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-email">Email</label>
           <input
-            [(ngModel)]="user.email"
-            type="text"
-            id="basic-icon-default-email"
-            class="form-control dt-email"
-            placeholder="john.doe@example.com"
-            aria-label="john.doe@example.com"
-            aria-describedby="basic-icon-default-email2"
-            name="email"
-            [class.error]="clientForm.submitted"
-            required
+                  [(ngModel)]="userToEdit.email"
+                  type="text"
+                  id="basic-icon-default-email"
+                  class="form-control dt-email"
+                  placeholder="john.doe@example.com"
+                  aria-label="john.doe@example.com"
+                  aria-describedby="basic-icon-default-email2"
+                  name="email"
+                  required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+
           <small class="form-text text-muted">
             You can use letters, numbers & periods
           </small>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname"
-            >Mobile</label
+          >Mobile</label
           >
           <input
-            [(ngModel)]="user.tel"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="(+216)  XX XXX XXX"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="tel"
-            [class.error]="clientForm.submitted"
-            required
+                  [(ngModel)]="userToEdit.tel"
+                  type="text"
+                  id="basic-icon-default-uname"
+                  class="form-control dt-uname"
+                  placeholder="(+216)  XX XXX XXX"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="tel"
+                  required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
         <div class="form-group">
           <label class="form-label" for="basic-icon-default-uname">Poste</label>
           <input
-            [(ngModel)]="user.poste"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="Jhon"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="username"
-            [class.error]="clientForm.submitted"
-            required
+                  [(ngModel)]="userToEdit.poste"
+                  type="text"
+                  id="basic-icon-default-uname"
+                  class="form-control dt-uname"
+                  placeholder="Jhon"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="poste"
+                  required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
         </div>
+
+
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
-            >Nom de Compte</label
+          <label class="form-label" for="basic-icon-default-uname">Company</label>
+          <select
+                  [(ngModel)]="selectedCompany"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Select Company"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+                  required
           >
-          <input
-            [(ngModel)]="user.username"
-            type="text"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            placeholder="Jhon"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="username"
-            [class.error]="clientForm.submitted"
-            required
-          />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
-            <small class="form-text text-success"
-              >This field is required!</small
-            >
-          </span>
+            <option *ngFor=" let company of listCompanies" [value]="company.id">{{company.name}}</option>
+          </select>
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
-            >Mot de Passe</label
+          <label class="form-label" for="basic-icon-default-uname">Assistant</label>
+          <select
+                  [(ngModel)]="selectedAssistant"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Select Company"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+                  required
           >
+            <option *ngFor=" let assistant of listAssistants" [value]="assistant.id">{{assistant.firstName}} {{assistant.lastName}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname">Nom de Compte</label>
           <input
-            [(ngModel)]="user.password"
-            type="password"
-            id="basic-icon-default-uname"
-            class="form-control dt-uname"
-            aria-label="jdoe1"
-            aria-describedby="basic-icon-default-uname2"
-            name="user-name"
-            [class.error]="clientForm.submitted"
-            required
+                  [(ngModel)]="userToEdit.username"
+                  type="text"
+
+                  class="form-control dt-uname"
+                  placeholder="Jhon"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+                  required
           />
-          <span *ngIf="clientForm.submitted" class="invalid-form">
+        </div>
+        <span *ngIf="response == 'username already used' " class="invalid-form">
             <small class="form-text text-success"
-              >This field is required!</small
+            >This username is already used!</small
             >
           </span>
-        </div>
+
+
       </div>
     </form>
   </div>
   <div class="modal-footer">
     <button
-      type="submit"
-      class="btn btn-warning mr-1"
-      (click)="submit()"
-      (click)="modal.close('Accept click')"
-      rippleEffect
+            type="submit"
+            class="btn btn-warning mr-1"
+            [disabled]="EditClientForm.invalid"
+            (click)="OnEditClient()"
+            (click)="modal.close('Accept click')"
+            rippleEffect
     >
       Sauvegarder
     </button>
     <button
-      type="reset"
-      class="btn btn-outline-secondary"
-      (click)="modal.close('Accept click')"
-      rippleEffect
+            type="reset"
+            class="btn btn-outline-secondary"
+            (click)="modal.close('Accept click')"
+            rippleEffect
     >
       Annuler
     </button>
@@ -494,14 +494,14 @@
 <!-- / Modal -->
 
 <!-- Modal -->
-<ng-template #ProfileClient let-modal>
+<ng-template #ProfileAssistant let-modal>
   <div class="modal-header">
     <h4 class="modal-title text-warning" id="myModalLabel1">Informations</h4>
     <button
-      type="button"
-      class="close"
-      (click)="modal.dismiss('Cross click')"
-      aria-label="Close"
+            type="button"
+            class="close"
+            (click)="modal.dismiss('Cross click')"
+            aria-label="Close"
     >
       <span aria-hidden="true">&times;</span>
     </button>
@@ -511,7 +511,7 @@
       <div class="card-body">
         <div class="row">
           <div
-            class="
+                  class="
               col-xl-6 col-lg-12
               d-flex
               flex-column
@@ -523,30 +523,30 @@
               <div class="d-flex justify-content-start">
                 <div>
                   <img
-                    class="img-fluid rounded"
-                    src="../../../assets/images/avatars/2.png"
-                    height="104"
-                    width="104"
-                    alt="User avatar"
+                          class="img-fluid rounded"
+                          src="../../../assets/images/avatars/2.png"
+                          height="104"
+                          width="104"
+                          alt="User avatar"
                   />
                 </div>
                 <ng-template #customAvatar>
                   <div class="mr-1 ml-0">
                     <div
-                      [ngClass]="{
+                            [ngClass]="{
                         'bg-light-success': data.status == 'active',
                         'bg-light-secondary': data.status == 'inactive',
                         'bg-light-warning': data.status == 'pending'
                       }"
-                      class="rounded p-3"
+                            class="rounded p-3"
                     >
                       <h2
-                        [ngClass]="{
+                              [ngClass]="{
                           'text-success': data.status == 'active',
                           'text-secondary': data.status == 'inactive',
                           'text-warning': data.status == 'pending'
                         }"
-                        class="m-0"
+                              class="m-0"
                       >
                         initials
                       </h2>
@@ -571,8 +571,8 @@
               <div class="d-flex align-items-center">
                 <div class="color-box bg-light-success">
                   <i
-                    [data-feather]="'trending-up'"
-                    [class]="'text-success'"
+                          [data-feather]="'trending-up'"
+                          [class]="'text-success'"
                   ></i>
                 </div>
                 <div class="ml-1 mt-2">
@@ -588,7 +588,7 @@
                 <div class="user-info-title">
                   <i data-feather="user" class="mr-1"></i>
                   <span class="card-text user-info-title font-weight-bold mb-0"
-                    >Username :</span
+                  >Username :</span
                   >
                 </div>
                 <p class="card-text mb-0">User</p>
@@ -597,7 +597,7 @@
                 <div class="user-info-title">
                   <i data-feather="check" class="mr-1"></i>
                   <span class="card-text user-info-title font-weight-bold mb-0"
-                    >Status :</span
+                  >Status :</span
                   >
                 </div>
                 <p class="card-text mb-0 ">Status</p>
@@ -606,7 +606,7 @@
                 <div class="user-info-title">
                   <i data-feather="star" class="mr-1"></i>
                   <span class="card-text user-info-title font-weight-bold mb-0"
-                    >Role :</span
+                  >Role :</span
                   >
                 </div>
                 <p class="card-text mb-0">Role</p>
@@ -615,7 +615,7 @@
                 <div class="user-info-title">
                   <i data-feather="flag" class="mr-1"></i>
                   <span class="card-text user-info-title font-weight-bold mb-0"
-                    >Country :</span
+                  >Country :</span
                   >
                 </div>
                 <p class="card-text mb-0">England</p>
@@ -624,7 +624,7 @@
                 <div class="user-info-title">
                   <i data-feather="phone" class="mr-1"></i>
                   <span class="card-text user-info-title font-weight-bold mb-0"
-                    >Contact :</span
+                  >Contact :</span
                   >
                 </div>
                 <p class="card-text mb-0">Contact</p>
@@ -637,10 +637,10 @@
   </div>
   <div class="modal-footer">
     <button
-      type="reset"
-      class="btn btn-outline-secondary"
-      (click)="modal.close('Accept click')"
-      rippleEffect
+            type="reset"
+            class="btn btn-outline-secondary"
+            (click)="modal.close('Accept click')"
+            rippleEffect
     >
       Quitter
     </button>

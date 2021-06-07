@@ -45,6 +45,11 @@ import { AssistantsClientsComponent } from "./assistantsHome/assistants-clients/
 import { CompaniesComponent } from "./admin/companies/companies.component";
 
 const appRoutes: Routes = [
+
+  {
+    path: "login",
+    component: LoginComponent,
+  },
   // Admin Routes
   {
     path: "admin/home",
@@ -109,10 +114,7 @@ const appRoutes: Routes = [
   },
 
   // Common Routes
-  {
-    path: "login",
-    component: LoginComponent,
-  },
+
   {
     path: "chat",
     loadChildren: () =>
@@ -131,7 +133,7 @@ const appRoutes: Routes = [
   },
   {
     path: "",
-    redirectTo: "/home",
+    redirectTo: "/login",
     pathMatch: "full",
   },
   {

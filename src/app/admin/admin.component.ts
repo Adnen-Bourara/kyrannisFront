@@ -4,6 +4,7 @@ import { CoreConfigService } from "@core/services/config.service";
 import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/breadcrumb.component";
 import { CoreMenuService } from "../../@core/components/core-menu/core-menu.service";
 import { adminMenu } from "../menu/adminMenu";
+import {Router} from '@angular/router';
 
 @Component({
   selector: "app-admin",
@@ -16,7 +17,8 @@ export class AdminComponent implements OnInit {
 
   constructor(
     private _coreConfigService: CoreConfigService,
-    private _coreMenuService: CoreMenuService
+    private _coreMenuService: CoreMenuService,
+    private _router: Router,
   ) {
     // Set the Menu
     this.menu = adminMenu;
@@ -59,5 +61,8 @@ export class AdminComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (localStorage.getItem('connected') == 'no')
+      this._router.navigate(["/login"]);
+  }
 }

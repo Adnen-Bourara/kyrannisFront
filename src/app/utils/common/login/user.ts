@@ -1,3 +1,5 @@
+import {Company} from '../../../admin/companies/company';
+
 export class User {
   id: number;
   username: String;
@@ -9,5 +11,5 @@ export class User {
   role: String;
   poste: String;
   assistant: User;
-  // company : Company
+  company : Company;
 }

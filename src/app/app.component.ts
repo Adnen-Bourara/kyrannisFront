@@ -123,6 +123,7 @@ export class AppComponent implements OnInit, OnDestroy {
    * On init
    */
   ngOnInit(): void {
+    localStorage.setItem('connected', 'no' );
     // Init wave effect (Ripple effect)
     Waves.init();
 
