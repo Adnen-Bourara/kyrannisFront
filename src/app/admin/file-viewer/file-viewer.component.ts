@@ -1,8 +1,9 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, EventEmitter, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { CoreMenuService } from "@core/components/core-menu/core-menu.service";
 import { CoreSidebarService } from "@core/components/core-sidebar/core-sidebar.service";
 import { CoreConfigService } from "@core/services/config.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/breadcrumb.component";
 import { adminMenu } from "app/menu/adminMenu";
 import { assistantMenu } from "app/menu/assistantMenu";
@@ -67,12 +68,14 @@ export class FileViewerComponent implements OnInit {
       assistantOccupied: "Amine Drawil",
     },
   ];
+  showedName = "Choisissez votre fichier";
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _coreMenuService: CoreMenuService,
     private _coreConfigService: CoreConfigService,
-    private router: Router
+    private router: Router,
+    private modalService: NgbModal
   ) {
     let queryString = this.router.url;
     console.log(queryString);
@@ -160,10 +163,33 @@ export class FileViewerComponent implements OnInit {
     this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
   }
 
+  onFileSelected(event) {
+    if (event.target.files.length > 0) {
+      console.log(event.target.files[0].name);
+      this.showedName = event.target.files[0].name ;
+    }
+  }
+
   GetInitials(name: string) {
     const thefullname = name.split(" ");
     const initials =
       thefullname.shift().charAt(0) + thefullname.pop().charAt(0);
     return initials.toUpperCase();
+  }
+
+  modalOpen(modalForm) {
+    console.log(modalForm);
+    this.modalService.open(modalForm);
+  }
+  modalClose(modalForm) {
+    console.log(modalForm);
+    this.modalService.dismissAll(modalForm);
+  }
+  modalOpenLG(modalLG) {
+    this.modalService.open(modalLG, {
+      centered: true,
+      size: "lg", // size: 'xs' | 'sm' | 'lg' | 'xl'
+      windowClass: "modal modal-info",
+    });
   }
 }

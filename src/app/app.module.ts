@@ -35,7 +35,7 @@ import { BreadcrumbModule } from "./layout/components/content-header/breadcrumb/
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
 import { ClientSidebarComponent } from "./admin/clients/client-sidebar/client-sidebar.component";
 import { AdminComponent } from "./admin/admin.component";
-import { FileViewerComponent } from "./utils/file-viewer/file-viewer.component";
+import { FileViewerComponent } from "./admin/file-viewer/file-viewer.component";
 import { AssistantsComponent } from "./admin/assistants/assistants.component";
 import { ContentHeaderModule } from "./layout/components/content-header/content-header.module";
 import { AccountSettingsComponent } from "./utils/account-settings/account-settings.component";

@@ -29,7 +29,9 @@
         type="button"
         class="btn btn-relief-success float-right col-3 mt-1"
       >
-        <a href="upload/admin" class="text-white">Uploader des Fichiers</a>
+        <a (click)="modalOpenLG(NewFile)" class="text-white"
+          >Uploader des Fichiers</a
+        >
       </button>
     </div>
   </div>
@@ -156,3 +158,135 @@
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<ng-template #NewFile let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title text-info" id="myModalLabel1">Ajouter un Fichier</h4>
+    <button
+      type="button"
+      class="close"
+      (click)="modal.dismiss('NewAssistant')"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body" tabindex="0" ngbAutofocus>
+    <form class="add-new-user modal-content pt-0" #assistantAddForm="ngForm">
+      <div class="modal-body flex-grow-1">
+        <div class="form-group">
+          <label for="basicInputFile">Fichier à téléverser</label>
+          <div class="custom-file">
+            <input
+              type="file"
+              class="custom-file-input"
+              id="customFile"
+              name="file"
+              (change)="onFileSelected($event)"
+            />
+            <label class="custom-file-label" for="customFile"
+              >{{showedName}}</label
+            >
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-fullname"
+            >Nom de Fichier</label
+          >
+          <input
+            type="text"
+            class="form-control dt-full-name"
+            placeholder="Doe"
+            name="nom"
+            required
+            aria-label="John Doe"
+            aria-describedby="basic-icon-default-fullname2"
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Nom de Créateur</label
+          >
+          <input
+            type="text"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="nomCreateur"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-email"
+            >Categorie</label
+          >
+          <input
+            type="text"
+            class="form-control dt-email"
+            placeholder="PDF"
+            aria-label="PDF"
+            aria-describedby="basic-icon-default-email2"
+            name="categorie"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Taille
+          </label>
+          <input
+            type="text"
+            class="form-control dt-uname"
+            placeholder="Taille"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="taille"
+            disabled
+            required
+          />
+        </div>
+        <small class="form-text text-muted mt-1">
+          la taille de fichier ne peut pas dépasser 5MO
+        </small>
+        <div class="form-group">
+          <label class="form-label" for="basic-icon-default-uname"
+            >Extension
+          </label>
+          <input
+            type="text"
+            class="form-control dt-uname"
+            placeholder="Extension"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="extension"
+            disabled
+            required
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button
+      type="submit"
+      [disabled]="assistantAddForm.invalid"
+      class="btn btn-info mr-1"
+      (click)="modal.close('NewFile')"
+      rippleEffect
+    >
+      Ajouter
+    </button>
+    <button
+      type="reset"
+      class="btn btn-outline-secondary"
+      (click)="modal.close('NewFile')"
+      rippleEffect
+    >
+      Annuler
+    </button>
+  </div>
+</ng-template>
+<!-- / Modal -->

@@ -32,23 +32,22 @@
             <div class="col-lg-3">
               <h4>Choisissez vos Fichiers</h4>
               <fieldset class="form-group">
-                <label for="file-upload-multiple">Ensemble:</label>
-                <div class="custom-file">
+                <label for="file-upload-multiple">Catégorie:</label>
+                <div class="form-group">
                   <input
-                    type="file"
-                    class="custom-file-input"
-                    type="file"
-                    ng2FileSelect
-                    [uploader]="uploader"
-                    multiple
-                    id="file-upload-multiple"
+                    type="text"
+                    class="form-control dt-full-name"
+                    placeholder="Doe"
+                    name="category"
+                    required
+                    aria-label="John Doe"
+                    aria-describedby="basic-icon-default-fullname2"
                   />
-                  <label class="custom-file-label">Fichiers Multiple</label>
                 </div>
               </fieldset>
 
               <fieldset class="form-group">
-                <label for="file-upload-single">Un seul Fichier</label>
+                <label for="file-upload-single">Choisissez vos fichier</label>
                 <div class="custom-file">
                   <input
                     type="file"
