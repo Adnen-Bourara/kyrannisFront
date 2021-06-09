@@ -43,6 +43,7 @@ import { AccountSettingsService } from "./utils/account-settings/account-setting
 import { AssistantsHomeComponent } from "./assistantsHome/assistants-home/assistants-home.component";
 import { AssistantsClientsComponent } from "./assistantsHome/assistants-clients/assistants-clients.component";
 import { CompaniesComponent } from "./admin/companies/companies.component";
+import { FichierDetailsComponent } from './admin/file-viewer/fichier-details/fichier-details.component';
 
 const appRoutes: Routes = [
 
@@ -75,8 +76,13 @@ const appRoutes: Routes = [
     },
   },
   {
-    path: "admin/viewfiles",
+    path: "admin/Fichier",
     component: FileViewerComponent,
+  },
+
+  {
+    path: 'admin/Fichier/more',
+    component: FichierDetailsComponent,
   },
 
   // Assistants Routes
@@ -156,6 +162,7 @@ const appRoutes: Routes = [
     AssistantsHomeComponent,
     AssistantsClientsComponent,
     CompaniesComponent,
+    FichierDetailsComponent,
   ],
   imports: [
     BrowserModule,

@@ -44,6 +44,7 @@
               <th>Nom du client</th>
               <th>Email</th>
               <th>societe</th>
+              <th>Fichiers</th>
               <th>Actions</th>
             </tr>
             </thead>
@@ -60,6 +61,10 @@
               <td>{{ a.email }}</td>
               <td>
                 <div class="badge badge-info">{{ a.company.name }}</div>
+              </td>
+
+              <td>
+                <button type="button" class="btn btn-success" (click)="goToFichierComponent(a)" rippleEffect>Consulter Fichiers</button>
               </td>
 
               <td>

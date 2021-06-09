@@ -131,6 +131,7 @@ export class ClientsComponent implements OnInit {
     const initials = firstname.charAt(0) + lastname.charAt(0);
     return initials.toUpperCase();
   }
+
   modalOpen(modalForm) {
     this.modalService.open(modalForm);
   }
@@ -141,6 +142,11 @@ export class ClientsComponent implements OnInit {
       size: 'lg' // size: 'xs' | 'sm' | 'lg' | 'xl'
     });
 
+  }
+
+  goToFichierComponent(a: any) {
+    localStorage.setItem('idClient' ,a.id);
+    this._router.navigateByUrl('admin/Fichier');
   }
 
   async OnEditClient() {

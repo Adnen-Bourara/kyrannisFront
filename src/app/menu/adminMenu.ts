@@ -74,29 +74,7 @@ export const adminMenu: CoreMenu[] = [
       classes: "badge-light-success badge-pill",
     },
   },
-  // Files
-  {
-    id: "files",
-    title: "Fichiers",
-    type: "collapsible",
-    icon: "file-text",
-    children: [
-      {
-        id: "upload",
-        title: "Envoyer Fichiers",
-        type: "item",
-        icon: "upload",
-        url: "/upload/admin",
-      },
-      {
-        id: "allFiles",
-        title: "Consulter Fichiers",
-        type: "item",
-        icon: "list",
-        url: "/admin/viewfiles",
-      },
-    ],
-  },
+
   {
     id: "Settings",
     title: "Paramétres ",

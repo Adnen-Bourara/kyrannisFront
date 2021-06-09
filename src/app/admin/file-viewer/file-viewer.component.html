@@ -2,8 +2,10 @@
   <h2 class="content-header-title col-4 float-left mb-0 border-right">
     Gérer Les Fichiers
   </h2>
+
   <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
 </div>
+<p>Client : {{client.firstName}} {{client.lastName}}</p>
 <div>
   <div class="panel-body">
     <div class="container mt-3">
@@ -28,9 +30,10 @@
       <button
         type="button"
         class="btn btn-relief-success float-right col-3 mt-1"
+        (click)="modalOpenLG(NewFile)"
       >
-        <a (click)="modalOpenLG(NewFile)" class="text-white"
-          >Uploader des Fichiers</a
+        <a class="text-white"
+          >Téléverser un fichier</a
         >
       </button>
     </div>
@@ -43,32 +46,24 @@
             <thead class="thead-light">
               <tr>
                 <th>Nom de Fichier</th>
-                <th>Client</th>
+                <th>Date de création</th>
                 <th>Type de Fichier</th>
-                <th>Assistant Occupé</th>
+                <th>Nom créateur</th>
+                <th>Plus de details</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody class="table-striped">
               <tr *ngFor="let f of files">
                 <td>
-                  <strong>{{ f.fileName }}</strong>
+                  <strong>{{ f.nom }}</strong>
                 </td>
-                <td>{{ f.assistantOccupied }}</td>
+                <td>{{ f.dateCreation }}</td>
                 <td>
-                  <div *ngIf="f.type == 'Excel'" class="badge badge-success">
-                    Excel
-                  </div>
-                  <div *ngIf="f.type == 'Word'" class="badge badge-info">
-                    Word
-                  </div>
-                  <div *ngIf="f.type == 'Pdf'" class="badge badge-danger">
-                    Pdf
-                  </div>
+                 {{f.extension}}
                 </td>
-                <td>
-                  <strong>{{ f.client }}</strong>
-                </td>
+                <td>{{ f.nomCreateur }}</td>
+                <td> <button type="button" (click)="seeMore(f)" class="btn btn-danger" rippleEffect>Plus Détails</button> </td>
                 <td>
                   <div class="btn-group">
                     <div ngbDropdown container="body" class="dropdown">
@@ -108,8 +103,9 @@
                         >
                         <a
                           ngbDropdownItem
-                          href="javascript:void(0)"
+                          href="{{f.filePath}}"
                           class="text-success"
+
                           ><span
                             [data-feather]="'chevrons-down'"
                             class="mr-1 text-success"
@@ -118,7 +114,7 @@
                         >
                         <a
                           ngbDropdownItem
-                          href="javascript:void(0)"
+                        (click)="deleteFile(f)"
                           class="text-danger"
                           ><span [data-feather]="'delete'" class="mr-1"></span
                           >Supprimer</a
@@ -173,10 +169,10 @@
     </button>
   </div>
   <div class="modal-body" tabindex="0" ngbAutofocus>
-    <form class="add-new-user modal-content pt-0" #assistantAddForm="ngForm">
+    <form class="add-new-user modal-content pt-0" #fileAddForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
-          <label for="basicInputFile">Fichier à téléverser</label>
+          <label >Fichier à téléverser</label>
           <div class="custom-file">
             <input
               type="file"
@@ -191,7 +187,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-fullname"
+          <label class="form-label"
             >Nom de Fichier</label
           >
           <input
@@ -199,42 +195,65 @@
             class="form-control dt-full-name"
             placeholder="Doe"
             name="nom"
+            [(ngModel)]="fileToAdd.nom"
             required
             aria-label="John Doe"
             aria-describedby="basic-icon-default-fullname2"
           />
         </div>
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
+          <label class="form-label"
             >Nom de Créateur</label
           >
           <input
             type="text"
             class="form-control dt-uname"
             placeholder="Jhon"
+            [(ngModel)]="fileToAdd.nomCreateur"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="nomCreateur"
             required
           />
         </div>
+
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-email"
-            >Categorie</label
+          <label class="form-label"
+          >Date Creation</label
           >
           <input
-            type="text"
-            class="form-control dt-email"
-            placeholder="PDF"
-            aria-label="PDF"
-            aria-describedby="basic-icon-default-email2"
-            name="categorie"
-            required
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Jhon"
+                  [(ngModel)]="fileToAdd.dateCreation"
+                  aria-label="jdoe1"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="dateCreation"
+                  required
           />
         </div>
 
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
+          <label class="form-label" >Categorie</label>
+          <select
+                  [(ngModel)]="fileToAdd.categorie"
+                  type="text"
+                  class="form-control dt-uname"
+                  placeholder="Select Company"
+                  aria-describedby="basic-icon-default-uname2"
+                  name="username"
+                  required
+          >
+            <option value="Autres">Autres</option>
+            <option value="Achat">Achat</option>
+            <option value="Vente">Vente</option>
+            <option value="Banque">Banque</option>
+            <option value="Caisse">Caisse</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label"
             >Taille
           </label>
           <input
@@ -242,23 +261,22 @@
             class="form-control dt-uname"
             placeholder="Taille"
             aria-label="jdoe1"
+            [(ngModel)]="fileToAdd.taille"
             aria-describedby="basic-icon-default-uname2"
             name="taille"
             disabled
             required
           />
         </div>
-        <small class="form-text text-muted mt-1">
-          la taille de fichier ne peut pas dépasser 5MO
-        </small>
         <div class="form-group">
-          <label class="form-label" for="basic-icon-default-uname"
+          <label class="form-label"
             >Extension
           </label>
           <input
             type="text"
             class="form-control dt-uname"
             placeholder="Extension"
+            [(ngModel)]="fileToAdd.extension"
             aria-label="jdoe1"
             aria-describedby="basic-icon-default-uname2"
             name="extension"
@@ -272,7 +290,8 @@
   <div class="modal-footer">
     <button
       type="submit"
-      [disabled]="assistantAddForm.invalid"
+      [disabled]="fileAddForm.invalid"
+      (click)="addFichier()"
       class="btn btn-info mr-1"
       (click)="modal.close('NewFile')"
       rippleEffect

@@ -8,6 +8,10 @@ import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/brea
 import { adminMenu } from "app/menu/adminMenu";
 import { assistantMenu } from "app/menu/assistantMenu";
 import { menu } from "app/menu/menu";
+import {Fichier} from './fichier';
+import {FichierService} from './fichier.service';
+import {User} from '../../utils/common/login/user';
+import {UserServiceService} from '../../utils/common/login/user-service.service';
 
 @Component({
   selector: "app-file-viewer",
@@ -19,64 +23,24 @@ export class FileViewerComponent implements OnInit {
   public pageBasicText = 1;
   coreConfig: any;
   menu: any;
-  files = [
-    {
-      id: "0",
-      fileName: "BilanMaison.exc",
-      type: "Excel",
-      client: "to to",
-      assistantOccupied: "Amine Drawil",
-    },
-    {
-      id: "1",
-      fileName: "ContratOfficiel.pdf",
-      type: "Pdf",
-      client: "to to",
-
-      assistantOccupied: "Ahmed toto",
-    },
-    {
-      id: "2",
-      fileName: "Devis.wd",
-      type: "Word",
-      client: "to to",
-
-      assistantOccupied: "Salem toto",
-    },
-    {
-      id: "3",
-      fileName: "Officel.exc",
-      type: "Excel",
-      client: "to to",
-
-      assistantOccupied: "Amine Drawil",
-    },
-    {
-      id: "4",
-      fileName: "Facture.exc",
-      type: "Excel",
-      client: "to to",
-
-      assistantOccupied: "toto toto",
-    },
-    {
-      id: "5",
-      fileName: "finalContract.pdf",
-      type: "Pdf",
-      client: "to to",
-
-      assistantOccupied: "Amine Drawil",
-    },
-  ];
+  files : Fichier[] =[];
   showedName = "Choisissez votre fichier";
+  idClient :any;
+  client = new User();
+  fileToAdd = new Fichier();
+  file: File;
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
     private _coreMenuService: CoreMenuService,
     private _coreConfigService: CoreConfigService,
     private router: Router,
-    private modalService: NgbModal
-  ) {
+    private modalService: NgbModal,
+    private fichierService: FichierService,
+    private userService: UserServiceService,
+    private _router: Router,
+  )
+  {
     let queryString = this.router.url;
     console.log(queryString);
 
@@ -150,9 +114,12 @@ export class FileViewerComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
+async  ngOnInit(){
+    this.idClient = localStorage.getItem('idClient');
+    this.client = await this.userService.getUser(this.idClient);
+    this.files = await this.fichierService.getFichiersByClientId(this.idClient);
+  }
 
-  onGetAssistants() {}
 
   /**
    * Toggle the sidebar
@@ -165,9 +132,30 @@ export class FileViewerComponent implements OnInit {
 
   onFileSelected(event) {
     if (event.target.files.length > 0) {
-      console.log(event.target.files[0].name);
-      this.showedName = event.target.files[0].name ;
+      this.showedName =  event.target.files[0].name;
+      const size = event.target.files[0].size;
+      this.fileToAdd.taille = `${Math.round(size / 1024)} KB`;
+      this.file = event.target.files[0];
+      this.fileToAdd.extension = event.target.files[0].name.split('.')[1];
+      this.fileToAdd.dateCreation = new Date().toDateString();
     }
+  }
+
+  async addFichier(){
+    this.fileToAdd = await this.fichierService.addFichier(this.fileToAdd,this.client.id);
+    await this.fichierService.uploadFile(this.file, this.fileToAdd);
+    this.ngOnInit();
+  }
+
+  async deleteFile(f:any) {
+    await this.fichierService.deleteFichier(f.id);
+    this.ngOnInit();
+  }
+
+  seeMore(f:any)
+  {
+    localStorage.setItem('idFichier',f.id);
+    this._router.navigateByUrl('admin/Fichier/more');
   }
 
   GetInitials(name: string) {
@@ -186,6 +174,7 @@ export class FileViewerComponent implements OnInit {
     this.modalService.dismissAll(modalForm);
   }
   modalOpenLG(modalLG) {
+    this.fileToAdd.categorie = 'Autres';
     this.modalService.open(modalLG, {
       centered: true,
       size: "lg", // size: 'xs' | 'sm' | 'lg' | 'xl'
