@@ -1,1 +1,126 @@
-<p>fichier-details works!</p>
+<div class="row">
+  <h2 class="content-header-title col-4 float-left mb-0 border-right">
+    Détail du Fichier :<br />
+    <p class="text-info mt-2">{{ file.nom }}</p>
+  </h2>
+
+  <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
+</div>
+
+<!-- File Details starts -->
+<div class="card">
+  <div class="card-body">
+    <div class="row my-2">
+      <div
+        class="
+          col-12 col-md-5
+          d-flex
+          align-items-center
+          justify-content-center
+          mb-2 mb-md-0
+        "
+      >
+        <div class="d-flex align-items-center justify-content-center">
+          <img
+            src="../../../../assets/images/File.png"
+            class="img-fluid product-img"
+            alt="product image"
+          />
+        </div>
+      </div>
+      <div class="col-12 col-md-7">
+        <h4>Nom de Fichier</h4>
+        <span class="card-text item-company"
+          >By
+          <a href="javascript:void(0)" class="company-name">
+            Nom Client
+          </a></span
+        >
+        <span class="card-text item-company"
+          >| Classé dans la catégorie
+          <a href="javascript:void(0)" class="company-name">
+            Nom Catégorie</a
+          ></span
+        >
+        <hr />
+        <h4 class="mt-2">Taille du Fichier</h4>
+        <p class="card-text">
+          <span class="text-success">Taille de fichier</span>
+        </p>
+        <hr />
+        <h4 class="mt-2">Date du Création</h4>
+        <p class="card-text">
+          <span class="text-success">00/00/0000</span>
+        </p>
+        <hr />
+        <h4 class="mt-2">Dernière Modification</h4>
+        <p class="card-text">
+          <span class="text-success">00/00/0000</span>
+        </p>
+        <hr />
+        <h4 class="mt-2">Extension</h4>
+        <span class="card-text item-company text-primary">ext </span>
+        <hr />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- File Details ends -->
+
+<!-- File Comments -->
+<div class="col-11 mt-1 ml-5" id="blogComment">
+  <h6 class="section-label mt-25">Comment</h6>
+  <!-- On This div line 74 we add the ngFor normalement thez avatar l user ema hatit taswira predef -->
+  <div class="card">
+    <div class="card-body">
+      <div class="media">
+        <div class="avatar mr-75">
+          <img
+            src="../../../../assets/images/avatars/1.png"
+            width="38"
+            height="38"
+            alt="Avatar"
+          />
+        </div>
+        <div class="media-body">
+          <h6 class="font-weight-bolder mb-25">Commentor username</h6>
+          <p class="card-text text-warning mb-0"> Assistant , HR Manager </p>
+          <p class="card-text text-warning">9 Juin, 16:50 PM </p>
+          <p class="card-text">
+            Comment Text Lorem ipsum dolor sit, amet consectetur adipisicing
+            elit. Quaerat, temporibus? Necessitatibus atque neque ad, animi
+            temporibus officiis explicabo saepe veritatis delectus distinctio
+            modi aperiam doloremque. Molestias delectus quo possimus totam?
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ File Comment -->
+
+<!-- Leave a File Comment -->
+<div class="col-11 mt-1 ml-5">
+  <h6 class="section-label mt-25">Laisser un Commentaire</h6>
+  <div class="card">
+    <div class="card-body">
+      <form action="javascript:void(0);" class="form">
+        <div class="row">
+          <div class="col-12">
+            <textarea
+              class="form-control mb-2"
+              rows="4"
+              placeholder="Comment"
+            ></textarea>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary" rippleEffect>
+              Poster Commentaire
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!--/ Leave a File Comment -->

@@ -1,11 +1,11 @@
 <div class="row">
   <h2 class="content-header-title col-4 float-left mb-0 border-right">
-    Gérer Les Fichiers
+    Gérer les Fichiers du client :<br />
+    <p class="text-info mt-2">{{ client.firstName }} {{ client.lastName }}</p>
   </h2>
 
   <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
 </div>
-<p>Client : {{client.firstName}} {{client.lastName}}</p>
 <div>
   <div class="panel-body">
     <div class="container mt-3">
@@ -32,9 +32,7 @@
         class="btn btn-relief-success float-right col-3 mt-1"
         (click)="modalOpenLG(NewFile)"
       >
-        <a class="text-white"
-          >Téléverser un fichier</a
-        >
+        <a class="text-white">Téléverser un fichier</a>
       </button>
     </div>
   </div>
@@ -60,10 +58,20 @@
                 </td>
                 <td>{{ f.dateCreation }}</td>
                 <td>
-                 {{f.extension}}
+                  {{ f.extension }}
                 </td>
                 <td>{{ f.nomCreateur }}</td>
-                <td> <button type="button" (click)="seeMore(f)" class="btn btn-danger" rippleEffect>Plus Détails</button> </td>
+                <td>
+                  <button
+                    type="button"
+                    (click)="seeMore(f)"
+                    class="btn btn-danger"
+                    rippleEffect
+                  >
+                    <span [data-feather]="'file-plus'" class="mr-1"></span>Plus
+                    de Détails
+                  </button>
+                </td>
                 <td>
                   <div class="btn-group">
                     <div ngbDropdown container="body" class="dropdown">
@@ -103,9 +111,8 @@
                         >
                         <a
                           ngbDropdownItem
-                          href="{{f.filePath}}"
+                          href="{{ f.filePath }}"
                           class="text-success"
-
                           ><span
                             [data-feather]="'chevrons-down'"
                             class="mr-1 text-success"
@@ -114,7 +121,7 @@
                         >
                         <a
                           ngbDropdownItem
-                        (click)="deleteFile(f)"
+                          (click)="deleteFile(f)"
                           class="text-danger"
                           ><span [data-feather]="'delete'" class="mr-1"></span
                           >Supprimer</a
@@ -172,7 +179,7 @@
     <form class="add-new-user modal-content pt-0" #fileAddForm="ngForm">
       <div class="modal-body flex-grow-1">
         <div class="form-group">
-          <label >Fichier à téléverser</label>
+          <label>Fichier à téléverser</label>
           <div class="custom-file">
             <input
               type="file"
@@ -181,15 +188,13 @@
               name="file"
               (change)="onFileSelected($event)"
             />
-            <label class="custom-file-label" for="customFile"
-              >{{showedName}}</label
-            >
+            <label class="custom-file-label" for="customFile">{{
+              showedName
+            }}</label>
           </div>
         </div>
         <div class="form-group">
-          <label class="form-label"
-            >Nom de Fichier</label
-          >
+          <label class="form-label">Nom de Fichier</label>
           <input
             type="text"
             class="form-control dt-full-name"
@@ -202,9 +207,7 @@
           />
         </div>
         <div class="form-group">
-          <label class="form-label"
-            >Nom de Créateur</label
-          >
+          <label class="form-label">Nom de Créateur</label>
           <input
             type="text"
             class="form-control dt-uname"
@@ -218,31 +221,29 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label"
-          >Date Creation</label
-          >
+          <label class="form-label">Date Creation</label>
           <input
-                  type="text"
-                  class="form-control dt-uname"
-                  placeholder="Jhon"
-                  [(ngModel)]="fileToAdd.dateCreation"
-                  aria-label="jdoe1"
-                  aria-describedby="basic-icon-default-uname2"
-                  name="dateCreation"
-                  required
+            type="text"
+            class="form-control dt-uname"
+            placeholder="Jhon"
+            [(ngModel)]="fileToAdd.dateCreation"
+            aria-label="jdoe1"
+            aria-describedby="basic-icon-default-uname2"
+            name="dateCreation"
+            required
           />
         </div>
 
         <div class="form-group">
-          <label class="form-label" >Categorie</label>
+          <label class="form-label">Categorie</label>
           <select
-                  [(ngModel)]="fileToAdd.categorie"
-                  type="text"
-                  class="form-control dt-uname"
-                  placeholder="Select Company"
-                  aria-describedby="basic-icon-default-uname2"
-                  name="username"
-                  required
+            [(ngModel)]="fileToAdd.categorie"
+            type="text"
+            class="form-control dt-uname"
+            placeholder="Select Company"
+            aria-describedby="basic-icon-default-uname2"
+            name="username"
+            required
           >
             <option value="Autres">Autres</option>
             <option value="Achat">Achat</option>
@@ -253,9 +254,7 @@
         </div>
 
         <div class="form-group">
-          <label class="form-label"
-            >Taille
-          </label>
+          <label class="form-label">Taille </label>
           <input
             type="text"
             class="form-control dt-uname"
@@ -269,9 +268,7 @@
           />
         </div>
         <div class="form-group">
-          <label class="form-label"
-            >Extension
-          </label>
+          <label class="form-label">Extension </label>
           <input
             type="text"
             class="form-control dt-uname"

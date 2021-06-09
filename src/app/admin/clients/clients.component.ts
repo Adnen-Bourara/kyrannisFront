@@ -141,7 +141,11 @@ export class ClientsComponent implements OnInit {
       centered: true,
       size: 'lg' // size: 'xs' | 'sm' | 'lg' | 'xl'
     });
+  }
 
+  modalClose(modalForm) {
+    console.log(modalForm);
+    this.modalService.dismissAll(modalForm);
   }
 
   goToFichierComponent(a: any) {

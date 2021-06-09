@@ -44,34 +44,12 @@ export class FileViewerComponent implements OnInit {
     let queryString = this.router.url;
     console.log(queryString);
 
-    switch (queryString) {
-      case "/admin/viewfiles":
-        this.menu = adminMenu;
-        this._coreConfigService.setConfig({
-          layout: { menu: { collapsed: false } },
-        });
-        this._coreMenuService.register("adminMenu", this.menu);
-        this._coreMenuService.setCurrentMenu("adminMenu");
-        break;
-      case "/assistants/viewfiles":
-        this.menu = assistantMenu;
-        this._coreConfigService.setConfig({
-          layout: { menu: { collapsed: false } },
-        });
-        this._coreMenuService.register("assistantMenu", this.menu);
-        this._coreMenuService.setCurrentMenu("assistantMenu");
-        break;
-      case "/clients/viewfiles":
-        this.menu = menu;
-        this._coreConfigService.setConfig({
-          layout: { menu: { collapsed: false } },
-        });
-        this._coreMenuService.register("menu", this.menu);
-        this._coreMenuService.setCurrentMenu("menu");
-        break;
-      default:
-      // code block
-    }
+    this.menu = adminMenu;
+    this._coreConfigService.setConfig({
+      layout: { menu: { collapsed: false } },
+    });
+    this._coreMenuService.register("adminMenu", this.menu);
+    this._coreMenuService.setCurrentMenu("adminMenu");
 
     this.breadcrumbDefault = {
       links: [
