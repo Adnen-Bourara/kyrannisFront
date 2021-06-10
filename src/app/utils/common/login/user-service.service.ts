@@ -60,6 +60,10 @@ export class UserServiceService {
     return this.httpClient.get<User[]>(this.url + '/User/getClients/Company/' + id).toPromise();
   }
 
+  async getClientsByAssistant(id : number) {
+    return  this.httpClient.get<User[]>(this.url + '/User/getClients/Assistant/' + id).toPromise();
+  }
+
 checkUserName(user: User) {
    return  this.httpClient.post(this.url + '/User/checkUsername', user, {responseType: 'text'}).toPromise();
   }

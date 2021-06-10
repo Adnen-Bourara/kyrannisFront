@@ -80,7 +80,7 @@ export class LoginComponent implements OnInit {
       this.username,
       this.password,
     ]);
-    localStorage.setItem('connected', this.user.username.toString() );
+    localStorage.setItem('connected', this.user.id.toString() );
     // Login
     this.loading = true;
 

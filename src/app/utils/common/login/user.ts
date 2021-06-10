@@ -12,4 +12,5 @@ export class User {
   poste: String;
   assistant: User;
   company : Company;
+  listClients : User[];
 }

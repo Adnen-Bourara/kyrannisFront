@@ -87,6 +87,9 @@ export class AssistantsComponent implements OnInit {
   async onGetAssistants() {
     this.listAssistants = await this.userService.getAssistants();
     console.log(this.listAssistants);
+    for (const value of this.listAssistants) {
+      value.listClients = await this.userService.getClientsByAssistant(value.id);
+    }
   }
 
   /**

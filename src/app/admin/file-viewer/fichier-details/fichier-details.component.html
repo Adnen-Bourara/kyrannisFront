@@ -1,7 +1,7 @@
 <div class="row">
   <h2 class="content-header-title col-4 float-left mb-0 border-right">
-    Détail du Fichier :<br />
-    <p class="text-info mt-2">{{ file.nom }}</p>
+    Détails du Fichier :<br />
+    <p class="text-info mt-2">{{ fichier.nom }}</p>
   </h2>
 
   <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
@@ -33,33 +33,33 @@
         <span class="card-text item-company"
           >By
           <a href="javascript:void(0)" class="company-name">
-            Nom Client
+            {{client.firstName}} {{client.lastName}}
           </a></span
         >
         <span class="card-text item-company"
           >| Classé dans la catégorie
           <a href="javascript:void(0)" class="company-name">
-            Nom Catégorie</a
+            {{fichier.categorie}}</a
           ></span
         >
         <hr />
         <h4 class="mt-2">Taille du Fichier</h4>
         <p class="card-text">
-          <span class="text-success">Taille de fichier</span>
+          <span class="text-success">{{fichier.taille}}</span>
         </p>
         <hr />
         <h4 class="mt-2">Date du Création</h4>
         <p class="card-text">
-          <span class="text-success">00/00/0000</span>
+          <span class="text-success">{{fichier.dateCreation}}</span>
         </p>
         <hr />
-        <h4 class="mt-2">Dernière Modification</h4>
+        <h4 class="mt-2">Nom createur</h4>
         <p class="card-text">
-          <span class="text-success">00/00/0000</span>
+          <span class="text-success">{{fichier.nomCreateur}}</span>
         </p>
         <hr />
         <h4 class="mt-2">Extension</h4>
-        <span class="card-text item-company text-primary">ext </span>
+        <span class="card-text item-company text-primary">{{fichier.extension}} </span>
         <hr />
       </div>
     </div>
@@ -71,9 +71,10 @@
 <div class="col-11 mt-1 ml-5" id="blogComment">
   <h6 class="section-label mt-25">Comment</h6>
   <!-- On This div line 74 we add the ngFor normalement thez avatar l user ema hatit taswira predef -->
-  <div class="card">
+  <div *ngFor="let c of listComment" class="card">
     <div class="card-body">
       <div class="media">
+
         <div class="avatar mr-75">
           <img
             src="../../../../assets/images/avatars/1.png"
@@ -82,16 +83,77 @@
             alt="Avatar"
           />
         </div>
+
         <div class="media-body">
-          <h6 class="font-weight-bolder mb-25">Commentor username</h6>
-          <p class="card-text text-warning mb-0"> Assistant , HR Manager </p>
-          <p class="card-text text-warning">9 Juin, 16:50 PM </p>
-          <p class="card-text">
-            Comment Text Lorem ipsum dolor sit, amet consectetur adipisicing
-            elit. Quaerat, temporibus? Necessitatibus atque neque ad, animi
-            temporibus officiis explicabo saepe veritatis delectus distinctio
-            modi aperiam doloremque. Molestias delectus quo possimus totam?
+          <div *ngIf="c.commentor.id == userConnected.id" class="btn-group" style="float: right">
+            <div ngbDropdown container="body" class="dropdown">
+              <button
+                      ngbDropdownToggle
+                      data-toggle="dropdown"
+                      class="dropdown-toggle btn btn-sm hide-arrow"
+                      type="button"
+                      id="dropdownMenuButton300"
+                      aria-expanded="true"
+              >
+                <span [data-feather]="'more-vertical'"></span>
+              </button>
+              <div
+                      ngbDropdownMenu
+                      aria-labelledby="dropdownMenuButton300">
+
+                <a
+                        ngbDropdownItem
+                        (click)="editModeSwitch(c)"
+                ><span [data-feather]="'edit'" class="mr-1"></span
+                >Modifier</a
+                >
+                <a
+                        ngbDropdownItem
+                        class="text-danger"
+                        (click)="onDeleteComment(c)"
+                ><span [data-feather]="'delete'" class="mr-1"></span
+                >Supprimer</a
+                >
+              </div>
+            </div>
+          </div>
+          <h6 class="font-weight-bolder mb-25">{{c.commentor.firstName}} {{c.commentor.lastName}}</h6>
+          <p class="card-text text-warning mb-0">{{c.commentor.role}} </p>
+          <p class="card-text text-warning">{{c.dateEnvoie}} </p>
+          <p *ngIf="!c.editMode" class="card-text">
+            {{c.contenu}}
           </p>
+
+          <textarea
+                  *ngIf="c.editMode"
+                  class="form-control mb-2"
+                  rows="4"
+                  name="contenu"
+                  placeholder="Comment"
+                  [(ngModel)]="editedComment"
+          ></textarea>
+
+          <div  *ngIf="c.editMode" class="modal-footer">
+            <button
+                    type="submit"
+                    (click)="validEditComment(c)"
+                    class="btn btn-info mr-1"
+                    rippleEffect
+            >
+              Ajouter
+            </button>
+            <button
+                    type="reset"
+                    class="btn btn-outline-secondary"
+                    (click)="editModeSwitch(c)"
+                    rippleEffect
+            >
+              Annuler
+            </button>
+          </div>
+
+
+
         </div>
       </div>
     </div>
@@ -104,17 +166,19 @@
   <h6 class="section-label mt-25">Laisser un Commentaire</h6>
   <div class="card">
     <div class="card-body">
-      <form action="javascript:void(0);" class="form">
+      <form  class="form">
         <div class="row">
           <div class="col-12">
             <textarea
               class="form-control mb-2"
               rows="4"
+              name="contenu"
               placeholder="Comment"
+              [(ngModel)]="newComment.contenu"
             ></textarea>
           </div>
           <div class="col-12">
-            <button type="submit" class="btn btn-primary" rippleEffect>
+            <button type="submit" class="btn btn-primary" (click)="validComment()" rippleEffect>
               Poster Commentaire
             </button>
           </div>

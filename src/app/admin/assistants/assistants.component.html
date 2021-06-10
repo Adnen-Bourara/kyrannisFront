@@ -79,10 +79,10 @@
                         aria-labelledby="dropdownMenuButton300"
                       >
                         <a
-                          *ngFor="let c of a.clients"
+                          *ngFor="let c of a.listClients"
                           ngbDropdownItem
-                          href="javascript:void(0)"
-                          >{{ c.name }}</a
+
+                          >{{ c.firstName }} {{ c.lastName}}</a
                         >
                       </div>
                     </div>
