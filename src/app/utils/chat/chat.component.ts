@@ -17,6 +17,8 @@ import { assistantMenu } from "app/menu/assistantMenu";
 export class ChatComponent implements OnInit {
   public breadcrumbDefault: Breadcrumb;
   menu: any;
+  public selectedUser:number;
+  public refresh = true;
 
   constructor(
     private _coreMenuService: CoreMenuService,
@@ -55,20 +57,13 @@ export class ChatComponent implements OnInit {
       // code block
     }
 
-    this.breadcrumbDefault = {
-      links: [
-        {
-          name: "Home",
-          isLink: true,
-          link: "/",
-        },
-        {
-          name: "Admin",
-          isLink: false,
-        },
-      ],
-    };
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    setInterval(() => { this.refresh = !this.refresh }, 5 * 1000);
+  }
+
+  selectedId(id) {
+    this.selectedUser = id;
+  }
 }

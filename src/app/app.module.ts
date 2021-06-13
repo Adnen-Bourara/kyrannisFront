@@ -33,7 +33,6 @@ import { ClientsComponent } from "./admin/clients/clients.component";
 import { NgxDatatableModule } from "@swimlane/ngx-datatable";
 import { BreadcrumbModule } from "./layout/components/content-header/breadcrumb/breadcrumb.module";
 import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
-import { ClientSidebarComponent } from "./admin/clients/client-sidebar/client-sidebar.component";
 import { AdminComponent } from "./admin/admin.component";
 import { FileViewerComponent } from "./admin/file-viewer/file-viewer.component";
 import { AssistantsComponent } from "./admin/assistants/assistants.component";
@@ -44,6 +43,12 @@ import { AssistantsHomeComponent } from "./assistantsHome/assistants-home/assist
 import { AssistantsClientsComponent } from "./assistantsHome/assistants-clients/assistants-clients.component";
 import { CompaniesComponent } from "./admin/companies/companies.component";
 import { FichierDetailsComponent } from './admin/file-viewer/fichier-details/fichier-details.component';
+import { AssistantCompaniesComponent } from './assistantsHome/assistant-companies/assistant-companies.component';
+import { AssistantsFileViewerComponent } from './assistantsHome/assistants-file-viewer/assistants-file-viewer.component';
+import { AssistantFichierDetailsComponent } from './assistantsHome/assistants-file-viewer/assistant-fichier-details/assistant-fichier-details.component';
+import { ClientHomeComponent } from './client-home/client-home.component';
+import { ClientFileViewerComponent } from './client-home/client-file-viewer/client-file-viewer.component';
+import { ClientFileDetailsComponent } from './client-home/client-file-viewer/client-file-details/client-file-details.component';
 
 const appRoutes: Routes = [
 
@@ -53,7 +58,7 @@ const appRoutes: Routes = [
   },
   // Admin Routes
   {
-    path: "admin/home",
+    path: "admin/Home",
     component: AdminComponent,
   },
   {
@@ -69,13 +74,6 @@ const appRoutes: Routes = [
     component: CompaniesComponent,
   },
   {
-    path: "admin/settings",
-    component: AccountSettingsComponent,
-    resolve: {
-      accountSetting: AccountSettingsService,
-    },
-  },
-  {
     path: "admin/Fichier",
     component: FileViewerComponent,
   },
@@ -85,14 +83,36 @@ const appRoutes: Routes = [
     component: FichierDetailsComponent,
   },
 
+  {
+    path: "admin/settings",
+    component: AccountSettingsComponent,
+    resolve: {
+      accountSetting: AccountSettingsService,
+    },
+  },
+
+
   // Assistants Routes
   {
-    path: "assistants/home",
+    path: "assistants/Home",
     component: AssistantsHomeComponent,
+  },
+  {
+    path: "assistants/companies",
+    component: AssistantCompaniesComponent,
   },
   {
     path: "assistants/clients",
     component: AssistantsClientsComponent,
+  },
+  {
+    path: "assistants/Fichier",
+    component: AssistantsFileViewerComponent,
+  },
+
+  {
+    path: "assistants/Fichier/More",
+    component: AssistantFichierDetailsComponent,
   },
   {
     path: "assistants/settings",
@@ -103,10 +123,22 @@ const appRoutes: Routes = [
   },
   {
     path: "assistants/viewfiles",
-    component: FileViewerComponent,
+    component: AssistantsFileViewerComponent,
   },
 
   // Clients Routes
+  {
+    path: "clients/Home",
+    component: ClientHomeComponent,
+  },
+  {
+    path: "clients/Fichier",
+    component: ClientFileViewerComponent,
+  },
+  {
+    path: "clients/Fichier/More",
+    component: ClientFileDetailsComponent,
+  },
   {
     path: "clients/settings",
     component: AccountSettingsComponent,
@@ -114,11 +146,6 @@ const appRoutes: Routes = [
       accountSetting: AccountSettingsService,
     },
   },
-  {
-    path: "viewfiles/client",
-    component: FileViewerComponent,
-  },
-
   // Common Routes
 
   {
@@ -126,13 +153,7 @@ const appRoutes: Routes = [
     loadChildren: () =>
       import("./utils/chat/chat.module").then((m) => m.ChatModule),
   },
-  {
-    path: "upload",
-    loadChildren: () =>
-      import("./utils/file-uploader/file-uploader.module").then(
-        (m) => m.FileUploaderModule
-      ),
-  },
+
   {
     path: "error",
     component: ErrorComponent,
@@ -155,7 +176,6 @@ const appRoutes: Routes = [
     LoginComponent,
     ErrorComponent,
     ClientsComponent,
-    ClientSidebarComponent,
     AdminComponent,
     FileViewerComponent,
     AccountSettingsComponent,
@@ -163,6 +183,12 @@ const appRoutes: Routes = [
     AssistantsClientsComponent,
     CompaniesComponent,
     FichierDetailsComponent,
+    AssistantCompaniesComponent,
+    AssistantsFileViewerComponent,
+    AssistantFichierDetailsComponent,
+    ClientHomeComponent,
+    ClientFileViewerComponent,
+    ClientFileDetailsComponent,
   ],
   imports: [
     BrowserModule,

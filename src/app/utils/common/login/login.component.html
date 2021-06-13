@@ -33,7 +33,7 @@
 
         <form class="auth-login-form mt-2" #loginform=ngForm (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label class="form-label" for="login-email">Username</label>
+            <label class="form-label" >Username</label>
             <input
               name="username"
               type="text"
@@ -47,8 +47,7 @@
           </div>
           <div class="form-group">
             <div class="d-flex justify-content-between">
-              <label for="login-password">Mot de Passe</label
-              ><a routerLink="/pages/authentication/forgot-password-v2"><small>Mot de Passe oublié?</small></a>
+              <label>Mot de Passe</label>
             </div>
             <div class="input-group input-group-merge form-password-toggle">
               <input
@@ -60,25 +59,8 @@
                 aria-describedby="login-password"
                 tabindex="2"
               />
-              <div class="input-group-append">
-                <span class="input-group-text cursor-pointer"
-                  ><i
-                    class="feather font-small-4"
-                    [ngClass]="{
-                      'icon-eye-off': passwordTextType,
-                      'icon-eye': !passwordTextType
-                    }"
-                    (click)="togglePasswordTextType()"
-                  ></i
-                ></span>
-              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="custom-control custom-checkbox">
-              <input class="custom-control-input" id="remember-me" type="checkbox" tabindex="3" />
-              <label class="custom-control-label" for="remember-me">Rappelez-vous de moi</label>
-            </div>
+            <p style="color: #ff4125" *ngIf="loginform.submitted && user==null ">no details match found ! </p>
           </div>
           <button [disabled]="loading" class="btn btn-primary btn-block" tabindex="4" rippleEffect>
             <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>Se Connecter

@@ -19,44 +19,12 @@
           <button class="btn sidebar-toggle d-block d-lg-none mr-1 p-0" (click)="toggleSidebar('chat-sidebar')">
             <i data-feather="menu" class="font-medium-5"></i>
           </button>
-          <button
-            class="btn avatar avatar-border user-profile-toggle m-0 mr-1 p-0"
-            (click)="toggleSidebar('chat-active-sidebar')"
-          >
-            <img [src]="chatUser.avatar" alt="avatar" height="36" width="36" />
-            <span
-              [ngClass]="{
-                'avatar-status-offline': chatUser.status == 'offline',
-                'avatar-status-online': chatUser.status == 'online',
-                'avatar-status-busy': chatUser.status == 'busy',
-                'avatar-status-away': chatUser.status == 'away'
-              }"
-            ></span>
-          </button>
-          <h6 class="mb-0">{{ chatUser.fullName }}</h6>
-        </div>
-        <div class="d-flex align-items-center">
-          <i data-feather="phone-call" class="cursor-pointer d-sm-block d-none font-medium-2 mr-1"></i>
-          <i data-feather="video" class="cursor-pointer d-sm-block d-none font-medium-2 mr-1"></i>
-          <i data-feather="search" class="cursor-pointer d-sm-block d-none font-medium-2"></i>
-          <div ngbDropdown>
-            <button
-              class="btn-icon btn btn-transparent hide-arrow btn-sm"
-              type="button"
-              aria-haspopup="true"
-              aria-expanded="false"
-              ngbDropdownToggle
-            >
-              <i data-feather="more-vertical" id="chat-header-actions" class="font-medium-2"></i>
-            </button>
-            <div ngbDropdownMenu class="dropdown-menu-right" aria-labelledby="chat-header-actions">
-              <a ngbDropdownItem href="javascript:void(0);">View Contact</a>
-              <a ngbDropdownItem href="javascript:void(0);">Mute Notifications</a>
-              <a ngbDropdownItem href="javascript:void(0);">Block Contact</a>
-              <a ngbDropdownItem href="javascript:void(0);">Clear Chat</a>
-              <a ngbDropdownItem href="javascript:void(0);">Report</a>
-            </div>
+          <div style="height: 42px ; width: 42px" class="avatar bg-light-success mr-1">
+                    <span style="height: 42px ; width: 42px" class="avatar-content">{{
+                      GetInitials(chatUser.firstName, chatUser.lastName)
+                      }}</span>
           </div>
+          <h6 class="mb-0">{{ chatUser.firstName }} {{chatUser.lastName }}</h6>
         </div>
       </header>
     </div>
@@ -67,28 +35,36 @@
       <div class="chats">
         <div
           class="chat"
-          *ngFor="let chatRef of chats.chat"
-          [ngClass]="{ 'chat-left': chatRef.senderId === chats.userId }"
-        >
-          <div class="chat-avatar">
-            <span class="avatar box-shadow-1 cursor-pointer">
-              <img
-                *ngIf="chatRef.senderId === chats.userId; else alternateAvatar"
-                [src]="chatUser.avatar"
-                alt="avatar"
-                height="36"
-                width="36"
-              />
-              <ng-template #alternateAvatar>
-                <img [src]="userProfile.avatar" alt="avatar" height="36" width="36" />
-              </ng-template>
-            </span>
-          </div>
-          <div class="chat-body">
-            <div class="chat-content">
-              <p>{{ chatRef.message }}</p>
+          *ngFor="let chatRef of chats"
+          [ngClass]="{ 'chat-left': chatRef.sender.id === chatUser.id }"
+
+            >
+<div >
+          <div *ngIf="chatRef.sender.id == chatUser.id" class="chat-avatar">
+            <div style="height: 36px ; width: 36px" class="avatar bg-light-success mr-1">
+                    <span style="height: 36px ; width: 36px" class="avatar-content">{{
+                      GetInitials(chatUser.firstName, chatUser.lastName)
+                      }}</span>
             </div>
           </div>
+              <div *ngIf="chatRef.sender.id == userProfile.id" class="chat-avatar">
+                  <div style="height: 36px ; width: 36px" class="avatar bg-light-success mr-1">
+                    <span style="height: 36px ; width: 36px" class="avatar-content">{{
+                        GetInitials(userProfile.firstName, userProfile.lastName)
+                        }}</span>
+                  </div>
+              </div>
+
+          <div class="chat-body">
+            <div class="chat-content">
+        {{chatRef.contenu}}
+            </div>
+          </div>
+
+</div>
+
+
+
         </div>
       </div>
     </div>
@@ -97,26 +73,15 @@
     <!-- Submit Chat form -->
     <form class="chat-app-form" action="javascript:void(0);">
       <div class="input-group input-group-merge mr-1 form-send-message">
-        <div class="input-group-prepend">
-          <span class="speech-to-text input-group-text"><i data-feather="mic" class="cursor-pointer"></i></span>
-        </div>
         <input
           type="text"
           class="form-control message"
-          placeholder="Type your message or use speech to text"
-          [(ngModel)]="chatMessage"
+          placeholder="Type your message"
+          [(ngModel)]="chatMessage.contenu"
           name="chat-message"
-          (keydown.enter)="updateChat()"
         />
-        <div class="input-group-append">
-          <span class="input-group-text">
-            <label for="attach-doc" class="attachment-icon mb-0">
-              <i data-feather="image" class="cursor-pointer lighten-2 text-secondary"></i>
-              <input type="file" id="attach-doc" hidden /> </label
-          ></span>
-        </div>
       </div>
-      <button type="button" class="btn btn-primary send" (click)="updateChat()" rippleEffect>
+      <button type="button" class="btn btn-primary send" [disabled]="chatMessage.contenu == '' " (click)="sendMessage()"  rippleEffect>
         <i data-feather="send" class="d-lg-none"></i>
         <span class="d-none d-lg-block">Send</span>
       </button>

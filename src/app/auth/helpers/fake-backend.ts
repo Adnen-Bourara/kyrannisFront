@@ -18,10 +18,10 @@ import {
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-import { User, Role } from 'app/auth/models';
+import {Role, UserOld} from 'app/auth/models';
 
 // Users with role
-const users: User[] = [
+const users: UserOld[] = [
   {
     id: 1,
     email: 'admin@demo.com',

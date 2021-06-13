@@ -2,19 +2,23 @@ import { CoreMenu } from '@core/types'
 
 export const menu: CoreMenu[] = [
   {
-    id: 'home',
-    title: 'Home',
-    translate: 'MENU.HOME',
-    type: 'item',
-    icon: 'home',
-    url: 'home'
+    id: "clients",
+    title: "Gérer vos Fichiers",
+    translate: "MENU.SAMPLE",
+    type: "item",
+    icon: "user",
+    url: "clients/Fichier",
   },
   {
-    id: 'sample',
-    title: 'Sample',
-    translate: 'MENU.SAMPLE',
-    type: 'item',
-    icon: 'file',
-    url: 'sample'
+    id: "Clientchat",
+    title: "Chat",
+    type: "item",
+    icon: "message-square",
+    url: "/chat/clients",
+    badge: {
+      title: "New",
+      classes: "badge-light-success badge-pill",
+    },
   }
+
 ]

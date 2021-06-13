@@ -87,11 +87,11 @@ export class LoginComponent implements OnInit {
     // redirect to home page
     setTimeout(() => {
       if (this.user.role == "SuperAdmin")
-        this._router.navigate(["/admin/assistants"]);
+        this._router.navigate(["/admin/Home"]);
       else if (this.user.role == "Assistant")
-        this._router.navigate(["/assistants/clients"]);
+        this._router.navigate(["/assistants/Home"]);
       else if (this.user.role == "Client")
-        this._router.navigate(["/clients/home"]);
+        this._router.navigate(["/clients/Home"]);
       else console.log("Error");
     }, 100);
   }
@@ -107,6 +107,7 @@ export class LoginComponent implements OnInit {
       email: ["", [Validators.required, Validators.email]],
       password: ["", Validators.required],
     });
+    localStorage.setItem('connected', 'no' );
 
     // get return url from route parameters or default to '/'
     this.returnUrl = this._route.snapshot.queryParams["returnUrl"] || "/";

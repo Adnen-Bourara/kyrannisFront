@@ -33,6 +33,7 @@ export class ClientsComponent implements OnInit {
   response : any;
   editedUserPassword: any;
   confirmedPassword: any;
+  public connectedUser = new User();
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
@@ -89,7 +90,8 @@ export class ClientsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if (localStorage.getItem('connected') == 'no')
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+    if(this.connectedUser.role != 'SuperAdmin' )
       this._router.navigate(["/login"]);
 
     this.userToAdd = new User();

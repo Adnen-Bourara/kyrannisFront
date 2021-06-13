@@ -29,6 +29,7 @@ export class FileViewerComponent implements OnInit {
   client = new User();
   fileToAdd = new Fichier();
   file: File;
+  public connectedUser = new User();
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
@@ -41,8 +42,7 @@ export class FileViewerComponent implements OnInit {
     private _router: Router,
   )
   {
-    let queryString = this.router.url;
-    console.log(queryString);
+
 
     this.menu = adminMenu;
     this._coreConfigService.setConfig({
@@ -93,6 +93,9 @@ export class FileViewerComponent implements OnInit {
   }
 
 async  ngOnInit(){
+  this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+  if(this.connectedUser.role != 'SuperAdmin' )
+    this._router.navigate(["/login"]);
     this.idClient = localStorage.getItem('idClient');
     this.client = await this.userService.getUser(this.idClient);
     this.files = await this.fichierService.getFichiersByClientId(this.idClient);

@@ -2,7 +2,6 @@
   <h2 class="content-header-title col-3 float-left mb-1 border-right">
     Chat Page
   </h2>
-  <app-breadcrumb [breadcrumb]="breadcrumbDefault"></app-breadcrumb>
 </div>
 <div class="row mt-1">
   <div class="content-area-wrapper col-12">
@@ -17,21 +16,11 @@
           overlayClass="body-content-overlay"
           collapsibleSidebar="bs-gt-lg"
         >
-          <app-chat-sidebar class="chat-sidebar-wrapper"></app-chat-sidebar>
+          <app-chat-sidebar (selectedChat)="selectedId($event)" [refresh]="refresh" class="chat-sidebar-wrapper"></app-chat-sidebar>
         </core-sidebar>
 
         <!--/ chat-sidebar -->
 
-        <!-- chat-user-sidebar -->
-
-        <core-sidebar
-          class="chat-profile-sidebar"
-          name="chat-user-sidebar"
-          overlayClass="body-content-overlay"
-          hideOnEsc="true"
-        >
-          <app-chat-user-sidebar></app-chat-user-sidebar>
-        </core-sidebar>
       </div>
     </div>
     <!--/ chat-user-sidebar -->
@@ -41,18 +30,18 @@
     <!-- content-right -->
     <div class="content-right">
       <!-- chat-active-sidebar -->
-      <core-sidebar
-        class="user-profile-sidebar"
-        name="chat-active-sidebar"
-        overlayClass="body-content-overlay"
-        hideOnEsc="true"
-      >
-        <app-chat-active-sidebar></app-chat-active-sidebar>
-      </core-sidebar>
+<!--      <core-sidebar-->
+<!--        class="user-profile-sidebar"-->
+<!--        name="chat-active-sidebar"-->
+<!--        overlayClass="body-content-overlay"-->
+<!--        hideOnEsc="true"-->
+<!--      >-->
+<!--        <app-chat-active-sidebar></app-chat-active-sidebar>-->
+<!--      </core-sidebar>-->
       <!--/ chat-active-sidebar -->
       <div class="content-wrapper">
         <div class="content-body">
-          <app-chat-content></app-chat-content>
+          <app-chat-content [idSelected]="selectedUser" [refresh]="refresh" ></app-chat-content>
         </div>
       </div>
     </div>

@@ -4,16 +4,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { environment } from 'environments/environment';
-import { User, Role } from 'app/auth/models';
+import { UserOld, Role } from 'app/auth/models';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
   //public
-  public currentUser: Observable<User>;
+  public currentUser: Observable<UserOld>;
 
   //private
-  private currentUserSubject: BehaviorSubject<User>;
+  private currentUserSubject: BehaviorSubject<UserOld>;
 
   /**
    *
@@ -21,12 +21,12 @@ export class AuthenticationService {
    * @param {ToastrService} _toastrService
    */
   constructor(private _http: HttpClient, private _toastrService: ToastrService) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUserSubject = new BehaviorSubject<UserOld>(JSON.parse(localStorage.getItem('currentUser')));
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
   // getter: currentUserValue
-  public get currentUserValue(): User {
+  public get currentUserValue(): UserOld {
     return this.currentUserSubject.value;
   }
 

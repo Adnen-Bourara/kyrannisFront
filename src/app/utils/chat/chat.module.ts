@@ -19,24 +19,12 @@ import { BreadcrumbModule } from 'app/layout/components/content-header/breadcrum
 // routing
 const routes: Routes = [
   {
-    path: 'admin',
+    path: '**',
     component: ChatComponent,
     resolve: {
       chatData: ChatService
     }
-  },{
-    path: 'assistants',
-    component: ChatComponent,
-    resolve: {
-      chatData: ChatService
-    }
-  },{
-    path: 'clients',
-    component: ChatComponent,
-    resolve: {
-      chatData: ChatService
-    }
-  }
+  },
 ];
 
 @NgModule({

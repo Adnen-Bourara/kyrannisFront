@@ -1,48 +1,7 @@
 import { CoreMenu } from "@core/types";
 
 export const adminMenu: CoreMenu[] = [
-  {
-    id: "dashboard",
-    title: "Dashboard",
-    type: "collapsible",
-    icon: "home",
-    children: [
-      {
-        id: "home",
-        title: "Page d'acceuil",
-        type: "item",
-        icon: "airplay",
-        url: "/admin/home",
-      },
-      {
-        id: "History",
-        title: "Historique ",
-        type: "collapsible",
-        icon: "archive",
-        badge: {
-          title: "8",
-          classes: "badge-light-warning badge-pill",
-        },
-        children: [
-          {
-            id: "Users",
-            title: "Utilisateurs",
-            type: "item",
-            icon: "users",
-            url: "#",
-          },
-          {
-            id: "Transactions",
-            title: "Transactions ",
-            type: "item",
-            icon: "repeat",
-            url: "#",
-          },
-        ],
-      },
-    ],
-  },
-  {
+    {
     id: "Assistants",
     title: "Gérer Assistants",
     type: "item",

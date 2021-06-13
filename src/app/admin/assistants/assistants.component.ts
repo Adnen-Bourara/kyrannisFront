@@ -25,6 +25,7 @@ export class AssistantsComponent implements OnInit {
   response: any;
   confirmedPassword: String;
   editedUserPassword: String;
+  public connectedUser = new User();
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
@@ -78,8 +79,9 @@ export class AssistantsComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
-    if (localStorage.getItem("connected") == "no")
+  async ngOnInit() {
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+    if(this.connectedUser.role != 'SuperAdmin' )
       this._router.navigate(["/login"]);
     this.onGetAssistants();
   }
@@ -150,7 +152,7 @@ export class AssistantsComponent implements OnInit {
 
   async onChangePassword() {
     if (this.editedUserPassword == this.confirmedPassword) {
-      this.onEditAssistant;
+      this.userService.changePassword(this.editedUser.id, this.editedUserPassword);
       console.log("changed");
     } else console.log("Not Confirmed");
   }

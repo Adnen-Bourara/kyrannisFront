@@ -31,6 +31,12 @@ export class UserServiceService {
       .toPromise();
   }
 
+  async getAllUsers() {
+    return this.httpClient
+        .get<User[]>(this.url + 'User/getAll')
+        .toPromise();
+  }
+
   async getClients() {
     return this.httpClient
       .get<User[]>(this.url + 'User/GetAllClients')
@@ -66,5 +72,9 @@ export class UserServiceService {
 
 checkUserName(user: User) {
    return  this.httpClient.post(this.url + '/User/checkUsername', user, {responseType: 'text'}).toPromise();
+  }
+
+  changePassword(id: number , newPassword : String ) {
+    return this.httpClient.put(this.url + '/User/ChangePassword/' + id, newPassword).toPromise();
   }
 }

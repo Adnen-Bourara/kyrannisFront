@@ -7,7 +7,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 
-import { User } from 'app/auth/models';
+import { UserOld } from 'app/auth/models';
 
 @Component({
   selector: '[core-menu-horizontal-collapsible]',
@@ -15,7 +15,7 @@ import { User } from 'app/auth/models';
 })
 export class CoreMenuHorizontalCollapsibleComponent implements OnInit, OnDestroy {
   coreConfig: any;
-  currentUser: User;
+  currentUser: UserOld;
   isShow = false;
 
   // Conditionally add the active classes if UrlInChildren

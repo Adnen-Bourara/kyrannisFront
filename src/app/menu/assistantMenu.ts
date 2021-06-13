@@ -2,11 +2,11 @@ import { CoreMenu } from "@core/types";
 
 export const assistantMenu: CoreMenu[] = [
   {
-    id: "dashboard",
-    title: "Dashboard",
+    id: "Companies",
+    title: "Voir les Sociétés",
     type: "item",
-    icon: "home",
-    url: "assistants/home",
+    icon: "codesandbox",
+    url: "/assistants/companies",
   },
   {
     id: "clients",
@@ -26,28 +26,9 @@ export const assistantMenu: CoreMenu[] = [
       title: "New",
       classes: "badge-light-success badge-pill",
     },
-  },
-  {
-    id: "files",
-    title: "Files",
-    type: "collapsible",
-    icon: "file-text",
-    children: [
-      {
-        id: "upload",
-        title: "Envoyer Fichiers",
-        type: "item",
-        icon: "upload",
-        url: "/upload/assistants",
-      },
-      {
-        id: "allFiles",
-        title: "Consulter Fichiers",
-        type: "item",
-        icon: "list",
-        url: "/assistants/viewfiles",
-      },
-    ],
+
+
+
   },
   {
     id: "Settings",

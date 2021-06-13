@@ -1,16 +1,16 @@
 <!-- Chat Sidebar area -->
 <div class="chat-sidebar bg-white">
   <button class="btn sidebar-close-icon" (click)="toggleSidebar('chat-sidebar')">
-    <i data-feather="x"></i>
-  </button>
+  <i data-feather="x">hello</i>
+</button>
   <!-- Sidebar header start -->
   <div class="chat-fixed-search">
     <div class="d-flex align-items-center w-100">
       <div class="sidebar-profile-toggle">
-        <button class="btn avatar avatar-border p-0" (click)="toggleSidebar('chat-user-sidebar')">
+        <div class="btn avatar avatar-border p-0" >
           <img src="assets/images/portrait/small/avatar-s-11.jpg" alt="user_avatar" height="42" width="42" />
           <span class="avatar-status-online"></span>
-        </button>
+        </div>
       </div>
       <div class="input-group input-group-merge ml-1 w-100">
         <div class="input-group-prepend">
@@ -40,21 +40,15 @@
         [class.active]="selectedIndex === i"
         (click)="openChat(chatUser.id); toggleSidebar('chat-sidebar'); setIndex(i)"
       >
-        <span class="avatar"
-          ><img [src]="chatUser.avatar" height="42" width="42" alt="Generic placeholder image" />
-          <span
-            [ngClass]="{
-              'avatar-status-offline': chatUser.status == 'offline',
-              'avatar-status-online': chatUser.status == 'online',
-              'avatar-status-busy': chatUser.status == 'busy',
-              'avatar-status-away': chatUser.status == 'away'
-            }"
-          ></span>
-        </span>
+        <div style="height: 42px ; width: 42px" class="avatar bg-light-success mr-1">
+                    <span style="height: 42px ; width: 42px" class="avatar-content">{{
+                      GetInitials(chatUser.firstName, chatUser.lastName)
+                      }}</span>
+        </div>
         <div class="chat-info flex-grow-1">
-          <h5 class="mb-0">{{ chatUser.fullName }}</h5>
+          <h5 class="mb-0">{{ chatUser.firstName }}</h5>
           <p class="card-text text-truncate">
-            {{ chatUser.about }}
+            {{ chatUser.id }}
           </p>
         </div>
         <div class="chat-meta text-nowrap">
@@ -69,19 +63,21 @@
       </ng-template>
     </ul>
     <h4 class="chat-list-title">Contacts</h4>
-    <ng-container *ngIf="(contacts | filter: searchText:'fullName').length; else noResultsContacts"></ng-container>
+    <ng-container *ngIf="(contacts | filter: searchText:'firstName').length; else noResultsContacts"></ng-container>
     <ul class="chat-users-list contact-list media-list">
       <li
         *ngFor="let contact of contacts | filter: searchText:'fullName'"
         (click)="openChat(contact.id); toggleSidebar('chat-sidebar')"
       >
-        <span class="avatar"
-          ><img [src]="contact.avatar" height="42" width="42" alt="Generic placeholder image" />
-        </span>
+        <div style="height: 42px ; width: 42px" class="avatar bg-light-success mr-1">
+                    <span style="height: 42px ; width: 42px" class="avatar-content">{{
+                      GetInitials(contact.firstName, contact.lastName)
+                      }}</span>
+        </div>
         <div class="chat-info">
-          <h5 class="mb-0">{{ contact.fullName }}</h5>
+          <h5 class="mb-0">{{ contact.firstName }}</h5>
           <p class="card-text text-truncate">
-            {{ contact.about }}
+            {{ contact.firstName }}
           </p>
         </div>
       </li>

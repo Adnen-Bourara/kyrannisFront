@@ -11,9 +11,12 @@ import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.s
 import { CoreConfigService } from '@core/services/config.service'
 import { CoreMediaService } from '@core/services/media.service'
 
-import { User } from 'app/auth/models'
+
 
 import { Router } from '@angular/router'
+import {UserServiceService} from '../../../utils/common/login/user-service.service';
+import {UserOld} from '../../../auth/models';
+import {User} from '../../../utils/common/login/user';
 
 @Component({
   selector: 'app-navbar',
@@ -24,12 +27,12 @@ import { Router } from '@angular/router'
 export class NavbarComponent implements OnInit, OnDestroy {
   public horizontalMenu: boolean
   public hiddenMenu: boolean
-
+ public connectedUser = new User()
   public coreConfig: any
   public currentSkin: string
   public prevSkin: string
 
-  public currentUser: User
+  public currentUser: UserOld
 
   public languageOptions: any
   public navigation: any
@@ -79,7 +82,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private _coreMediaService: CoreMediaService,
     private _coreSidebarService: CoreSidebarService,
     private _mediaObserver: MediaObserver,
-    public _translateService: TranslateService
+    public _translateService: TranslateService,
+    private userService: UserServiceService,
   ) {
     this._authenticationService.currentUser.subscribe(x => (this.currentUser = x))
 
@@ -170,9 +174,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   /**
    * On init
    */
-  ngOnInit(): void {
+  async ngOnInit() {
     // get the currentUser details from localStorage
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
+
+    this.connectedUser = await this.userService.getUser( + localStorage.getItem('connected'))
 
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {

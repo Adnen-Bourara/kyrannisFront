@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 
 import { ChatService } from '../../chat.service';
+import {UserServiceService} from '../../../common/login/user-service.service';
+import {User} from '../../../common/login/user';
+import {MessageService} from '../../../../admin/messaging/message.service';
+import {element} from 'protractor';
+
 
 @Component({
   selector: 'app-chat-sidebar',
   templateUrl: './chat-sidebar.component.html'
 })
-export class ChatSidebarComponent implements OnInit {
+export class ChatSidebarComponent implements OnInit , OnChanges {
   // Public
-  public contacts;
-  public chatUsers;
+  public contacts : User[];
+  public chatUsers : User[];
   public searchText;
   public chats;
   public selectedIndex = null;
+  public idConnected;
+
+
 
   /**
    * Constructor
@@ -22,8 +30,9 @@ export class ChatSidebarComponent implements OnInit {
    * @param {ChatService} _chatService
    * @param {CoreSidebarService} _coreSidebarService
    */
-  constructor(private _chatService: ChatService, private _coreSidebarService: CoreSidebarService) {}
-
+  constructor(private _chatService: ChatService, private messageService: MessageService , private userService: UserServiceService, private _coreSidebarService: CoreSidebarService) {}
+    @Output() selectedChat = new EventEmitter();
+  @Input() refresh : boolean;
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
@@ -34,7 +43,9 @@ export class ChatSidebarComponent implements OnInit {
    * @param newChat
    */
   openChat(id) {
-    this._chatService.openChat(id);
+      console.log(id);
+      this._chatService.openChat(id);
+    this.selectedChat.emit(id);
   }
 
   /**
@@ -61,28 +72,30 @@ export class ChatSidebarComponent implements OnInit {
   /**
    * On init
    */
-  ngOnInit(): void {
+ async ngOnInit(){
+  this.idConnected = localStorage.getItem('connected');
     // Subscribe to contacts
-    this._chatService.onContactsChange.subscribe(res => {
-      this.contacts = res;
-    });
+    this.contacts  = await this.userService.getAllUsers();
+    this.contacts.forEach((u, index) => {
+      if (u.id == this.idConnected)
+        this.contacts.splice(index,1);
+    } );
 
-    let skipFirst = 0;
 
-    // Subscribe to chat users
-    this._chatService.onChatUsersChange.subscribe(res => {
-      this.chatUsers = res;
-
-      // Skip setIndex first time when initialized
-      if (skipFirst >= 1) {
-        this.setIndex(this.chatUsers.length - 1);
-      }
-      skipFirst++;
-    });
+      this.chatUsers = await this.messageService.getConversations( this.idConnected );
 
     // Subscribe to selected Chats
     this._chatService.onSelectedChatChange.subscribe(res => {
       this.chats = res;
     });
+  }
+
+  GetInitials(firstname: string, lastname: string) {
+    const initials = firstname.charAt(0) + lastname.charAt(0);
+    return initials.toUpperCase();
+  }
+
+  async ngOnChanges(changes: SimpleChanges){
+    this.chatUsers = await this.messageService.getConversations( this.idConnected );
   }
 }

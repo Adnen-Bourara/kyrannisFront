@@ -643,11 +643,11 @@
       <form action="#">
         <label>Nouveau Mot de Passe</label>
         <div class="form-group">
-          <input [(ngModel)]="editedUser.password" name="editedUserPassword" type="password" placeholder="Nouveau Mot de Passe" class="form-control" />
+          <input [(ngModel)]="editedUserPassword" name="editedUserPassword" type="password" placeholder="Nouveau Mot de Passe" class="form-control" />
         </div>
         <label>Confirmer le Nouveau Mot de Passe</label>
         <div class="form-group">
-          <input name ="confirmedPassword" type="password" placeholder="" class="form-control" />
+          <input name ="confirmedPassword" [(ngModel)]="confirmedPassword" type="password" placeholder="" class="form-control" />
         </div>
       </form>
     </div>

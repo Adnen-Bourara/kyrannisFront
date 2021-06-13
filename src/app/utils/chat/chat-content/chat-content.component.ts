@@ -1,25 +1,34 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild} from '@angular/core';
 
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
 
 import { ChatService } from '../chat.service';
+import {UserServiceService} from '../../common/login/user-service.service';
+import {MessageService} from '../../../admin/messaging/message.service';
+import {User} from '../../common/login/user';
+import {Message} from '../../../admin/messaging/message';
 
 @Component({
   selector: 'app-chat-content',
   templateUrl: './chat-content.component.html'
 })
-export class ChatContentComponent implements OnInit {
+export class ChatContentComponent implements OnInit, OnChanges {
   // Decorator
   @ViewChild('scrollMe') scrollMe: ElementRef;
+  @Input() idSelected : number;
+  @Input() refresh : boolean;
   scrolltop: number = null;
 
   // Public
   public activeChat: Boolean;
-  public chats;
-  public chatUser;
-  public userProfile;
-  public chatMessage = '';
+  public chats: Message[];
+  public chatUser = new User();
+  public userProfile = new User();
+  public chatMessage = new Message();
   public newChat;
+  public date1:any;
+  public date2:any;
+
 
   /**
    * Constructor
@@ -27,37 +36,11 @@ export class ChatContentComponent implements OnInit {
    * @param {ChatService} _chatService
    * @param {CoreSidebarService} _coreSidebarService
    */
-  constructor(private _chatService: ChatService, private _coreSidebarService: CoreSidebarService) {}
+  constructor(private _chatService: ChatService, private userService: UserServiceService, private messageService: MessageService , private _coreSidebarService: CoreSidebarService) {}
 
   // Public Methods
   // -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Update Chat
-   */
-  updateChat() {
-    this.newChat = {
-      message: this.chatMessage,
-      time: 'Mon Dec 10 2018 07:46:43 GMT+0000 (GMT)',
-      senderId: this.userProfile.id
-    };
-
-    // If chat data is available (update chat)
-    if (this.chats.chat) {
-      if (this.newChat.message !== '') {
-        this.chats.chat.push(this.newChat);
-        this._chatService.updateChat(this.chats);
-        this.chatMessage = '';
-        setTimeout(() => {
-          this.scrolltop = this.scrollMe?.nativeElement.scrollHeight;
-        }, 0);
-      }
-    }
-    // Else create new chat
-    else {
-      this._chatService.createNewChat(this.chatUser.id, this.newChat);
-    }
-  }
 
   /**
    * Toggle Sidebar
@@ -74,26 +57,44 @@ export class ChatContentComponent implements OnInit {
   /**
    * On init
    */
-  ngOnInit(): void {
-    // Subscribe to Chat Change
-    this._chatService.onChatOpenChange.subscribe(res => {
-      this.chatMessage = '';
-      this.activeChat = res;
-      setTimeout(() => {
-        this.scrolltop = this.scrollMe?.nativeElement.scrollHeight;
-      }, 0);
-    });
+ async  ngOnInit() {
+   this.userProfile = await this.userService.getUser( + localStorage.getItem('connected'));
 
-    // Subscribe to Selected Chat Change
-    this._chatService.onSelectedChatChange.subscribe(res => {
-      this.chats = res;
-    });
+   }
 
-    // Subscribe to Selected Chat User Change
-    this._chatService.onSelectedChatUserChange.subscribe(res => {
-      this.chatUser = res;
-    });
 
-    this.userProfile = this._chatService.userProfile;
+
+
+
+  async ngOnChanges(changes: SimpleChanges){
+
+    if (this.idSelected) {
+      this.chatUser = await this.userService.getUser(this.idSelected);
+      this.activeChat = true;
+      this.chats = await this.messageService.getConversation(this.userProfile.id, this.chatUser.id);
+      this.chats.sort((a, b) => {  this.date1 = new Date(a.dateEnvoie) ;
+     this.date2 = new Date(b.dateEnvoie) ;
+      return this.date1 - this.date2
+      });
+      this.chatMessage = new Message();
+    }
+
+    console.log(this.chats);
+
   }
+
+  GetInitials(firstname: string, lastname: string) {
+    const initials = firstname.charAt(0) + lastname.charAt(0);
+    return initials.toUpperCase();
+  }
+
+  async sendMessage() {
+   this.chatMessage.dateEnvoie = new Date().toString();
+  this.newChat = await this.messageService.sendMessage(this.chatMessage, this.userProfile.id, this.chatUser.id);
+
+  this.chats.push(this.newChat);
+    this.chatMessage = new Message();
+   console.log(this.chatMessage);
+  }
+
 }

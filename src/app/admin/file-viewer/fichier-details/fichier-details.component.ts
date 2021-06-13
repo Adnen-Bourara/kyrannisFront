@@ -86,7 +86,11 @@ export class FichierDetailsComponent implements OnInit {
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit() {
+
+    this.userConnected = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+    if(this.userConnected.role != 'SuperAdmin' )
+      this.router.navigate(["/login"]);
     this.onGetFile();
 
     this.newComment = new Commentaire();

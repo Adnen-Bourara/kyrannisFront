@@ -1,0 +1,307 @@
+<div class="row">
+    <h2 class="content-header-title col-4 float-left mb-0 border-right">
+        Gérer les Fichiers du client :<br />
+        <p class="text-info mt-2">{{ client.firstName }} {{ client.lastName }}</p>
+    </h2>
+
+</div>
+<div>
+    <div class="panel-body">
+        <div class="container mt-3">
+            <div
+                    class="
+          d-flex
+          align-items-center
+          justify-content-end
+          float-left
+          col-3
+          mt-1
+          mb-1
+        "
+            >
+                <label class="d-flex align-items-center"
+                >Chercher<input
+                        type="search"
+                        placeholder="Chercher Fichier"
+                        class="form-control ml-25"
+                /></label>
+            </div>
+            <button
+                    type="button"
+                    class="btn btn-relief-success float-right col-3 mt-1"
+                    (click)="modalOpenLG(NewFile)"
+            >
+                <a class="text-white">Téléverser un fichier</a>
+            </button>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class="thead-light">
+                        <tr>
+                            <th>Nom de Fichier</th>
+                            <th>Date de création</th>
+                            <th>Type de Fichier</th>
+                            <th>Nom créateur</th>
+                            <th>Plus de details</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table-striped">
+                        <tr *ngFor="let f of files">
+                            <td>
+                                <strong>{{ f.nom }}</strong>
+                            </td>
+                            <td>{{ f.dateCreation }}</td>
+                            <td>
+                                {{ f.extension }}
+                            </td>
+                            <td>{{ f.nomCreateur }}</td>
+                            <td>
+                                <button
+                                        type="button"
+                                        (click)="seeMore(f)"
+                                        class="btn btn-danger"
+                                        rippleEffect
+                                >
+                                    <span [data-feather]="'file-plus'" class="mr-1"></span>Plus
+                                    de Détails
+                                </button>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <div ngbDropdown container="body" class="dropdown">
+                                        <button
+                                                ngbDropdownToggle
+                                                data-toggle="dropdown"
+                                                class="dropdown-toggle btn btn-sm hide-arrow"
+                                                type="button"
+                                                id="dropdownMenuButton300"
+                                                aria-expanded="true"
+                                        >
+                                            <span [data-feather]="'more-vertical'"></span>
+                                        </button>
+                                        <div
+                                                ngbDropdownMenu
+                                                aria-labelledby="dropdownMenuButton300"
+                                        >
+                                            <a
+                                                    ngbDropdownItem
+                                                    href="javascript:void(0)"
+                                                    class="text-warning"
+                                            ><span
+                                                    [data-feather]="'alert-octagon'"
+                                                    class="mr-1"
+                                            ></span
+                                            >Valider</a
+                                            >
+                                            <a
+                                                    ngbDropdownItem
+                                                    href="javascript:void(0)"
+                                                    class="text-warning"
+                                            ><span
+                                                    [data-feather]="'alert-octagon'"
+                                                    class="mr-1"
+                                            ></span
+                                            >Archiver</a
+                                            >
+                                            <a
+                                                    ngbDropdownItem
+                                                    href="{{ f.filePath }}"
+                                                    class="text-success"
+                                            ><span
+                                                    [data-feather]="'chevrons-down'"
+                                                    class="mr-1 text-success"
+                                            ></span
+                                            >Télécharger</a
+                                            >
+                                            <a
+                                                    ngbDropdownItem
+                                                    (click)="deleteFile(f)"
+                                                    class="text-danger"
+                                            ><span [data-feather]="'delete'" class="mr-1"></span
+                                            >Supprimer</a
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="text-center">
+                        <ngb-pagination
+                                [collectionSize]="50"
+                                [(page)]="pageBasicText"
+                                aria-label="Custom pagination"
+                                class="d-flex justify-content-around mt-3"
+                        >
+                            <ng-template ngbPaginationPrevious
+                            ><span
+                                    [data-feather]="'chevron-left'"
+                                    [class]="'font-weight-bolde'"
+                            ></span
+                            >Prev
+                            </ng-template>
+                            <ng-template ngbPaginationNext
+                            >Next<span
+                                    [data-feather]="'chevron-right'"
+                                    [class]="'font-weight-bolder'"
+                            ></span>
+                            </ng-template>
+                        </ngb-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<ng-template #NewFile let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title text-info" id="myModalLabel1">Ajouter un Fichier</h4>
+        <button
+                type="button"
+                class="close"
+                (click)="modal.dismiss('NewAssistant')"
+                aria-label="Close"
+        >
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body" tabindex="0" ngbAutofocus>
+        <form class="add-new-user modal-content pt-0" #fileAddForm="ngForm">
+            <div class="modal-body flex-grow-1">
+                <div class="form-group">
+                    <label>Fichier à téléverser</label>
+                    <div class="custom-file">
+                        <input
+                                type="file"
+                                class="custom-file-input"
+                                id="customFile"
+                                name="file"
+                                (change)="onFileSelected($event)"
+                        />
+                        <label class="custom-file-label" for="customFile">{{
+                            showedName
+                            }}</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nom de Fichier</label>
+                    <input
+                            type="text"
+                            class="form-control dt-full-name"
+                            placeholder="Doe"
+                            name="nom"
+                            [(ngModel)]="fileToAdd.nom"
+                            required
+                            aria-label="John Doe"
+                            aria-describedby="basic-icon-default-fullname2"
+                    />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Nom de Créateur</label>
+                    <input
+                            type="text"
+                            class="form-control dt-uname"
+                            placeholder="Jhon"
+                            [(ngModel)]="fileToAdd.nomCreateur"
+                            aria-label="jdoe1"
+                            aria-describedby="basic-icon-default-uname2"
+                            name="nomCreateur"
+                            required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Date Creation</label>
+                    <input
+                            type="text"
+                            class="form-control dt-uname"
+                            placeholder="Jhon"
+                            [(ngModel)]="fileToAdd.dateCreation"
+                            aria-label="jdoe1"
+                            aria-describedby="basic-icon-default-uname2"
+                            name="dateCreation"
+                            required
+                    />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Categorie</label>
+                    <select
+                            [(ngModel)]="fileToAdd.categorie"
+                            type="text"
+                            class="form-control dt-uname"
+                            placeholder="Select Company"
+                            aria-describedby="basic-icon-default-uname2"
+                            name="username"
+                            required
+                    >
+                        <option value="Autres">Autres</option>
+                        <option value="Achat">Achat</option>
+                        <option value="Vente">Vente</option>
+                        <option value="Banque">Banque</option>
+                        <option value="Caisse">Caisse</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Taille </label>
+                    <input
+                            type="text"
+                            class="form-control dt-uname"
+                            placeholder="Taille"
+                            aria-label="jdoe1"
+                            [(ngModel)]="fileToAdd.taille"
+                            aria-describedby="basic-icon-default-uname2"
+                            name="taille"
+                            disabled
+                            required
+                    />
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Extension </label>
+                    <input
+                            type="text"
+                            class="form-control dt-uname"
+                            placeholder="Extension"
+                            [(ngModel)]="fileToAdd.extension"
+                            aria-label="jdoe1"
+                            aria-describedby="basic-icon-default-uname2"
+                            name="extension"
+                            disabled
+                            required
+                    />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button
+                type="submit"
+                [disabled]="fileAddForm.invalid"
+                (click)="addFichier()"
+                class="btn btn-info mr-1"
+                (click)="modal.close('NewFile')"
+                rippleEffect
+        >
+            Ajouter
+        </button>
+        <button
+                type="reset"
+                class="btn btn-outline-secondary"
+                (click)="modal.close('NewFile')"
+                rippleEffect
+        >
+            Annuler
+        </button>
+    </div>
+</ng-template>
+<!-- / Modal -->

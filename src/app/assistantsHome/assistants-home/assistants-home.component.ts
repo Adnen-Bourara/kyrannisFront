@@ -5,6 +5,8 @@ import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/brea
 import { adminMenu } from "app/menu/adminMenu";
 import { assistantMenu } from "app/menu/assistantMenu";
 import {Router} from '@angular/router';
+import {User} from '../../utils/common/login/user';
+import {UserServiceService} from '../../utils/common/login/user-service.service';
 
 @Component({
   selector: "app-assistants-home",
@@ -14,10 +16,12 @@ import {Router} from '@angular/router';
 export class AssistantsHomeComponent implements OnInit {
   public breadcrumbDefault: Breadcrumb;
   menu: any;
+  public connectedUser = new User();
 
   constructor(
     private _coreConfigService: CoreConfigService,
     private _coreMenuService: CoreMenuService,
+    private userService: UserServiceService,
     private _router: Router,
   ) {
     // Set the Menu
@@ -61,8 +65,9 @@ export class AssistantsHomeComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
-    if (localStorage.getItem('connected') == 'no')
+  async ngOnInit() {
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+    if(this.connectedUser.role != 'Assistant' )
       this._router.navigate(["/login"]);
   }
 }

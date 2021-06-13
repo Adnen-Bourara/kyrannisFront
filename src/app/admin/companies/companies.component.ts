@@ -25,6 +25,7 @@ export class CompaniesComponent implements OnInit {
   listCompanies: Company[] = [];
   newSociete = new Company ();
   modifSociete = new Company ();
+  public connectedUser = new User();
 
   constructor(
     private _coreSidebarService: CoreSidebarService,
@@ -119,7 +120,8 @@ export class CompaniesComponent implements OnInit {
   }
 
   async ngOnInit() {
-    if (localStorage.getItem('connected') == 'no')
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+    if(this.connectedUser.role != 'SuperAdmin' )
       this._router.navigate(["/login"]);
     await this.onGetCompanies();
   }

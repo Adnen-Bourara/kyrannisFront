@@ -5,6 +5,8 @@ import { Breadcrumb } from "app/layout/components/content-header/breadcrumb/brea
 import { CoreMenuService } from "../../@core/components/core-menu/core-menu.service";
 import { adminMenu } from "../menu/adminMenu";
 import {Router} from '@angular/router';
+import {User} from '../utils/common/login/user';
+import {UserServiceService} from '../utils/common/login/user-service.service';
 
 @Component({
   selector: "app-admin",
@@ -14,11 +16,13 @@ import {Router} from '@angular/router';
 export class AdminComponent implements OnInit {
   public breadcrumbDefault: Breadcrumb;
   menu: any;
+  public connectedUser = new User();
 
   constructor(
     private _coreConfigService: CoreConfigService,
     private _coreMenuService: CoreMenuService,
     private _router: Router,
+    private userService : UserServiceService
   ) {
     // Set the Menu
     this.menu = adminMenu;
@@ -61,8 +65,9 @@ export class AdminComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {
-    if (localStorage.getItem('connected') == 'no')
+ async ngOnInit() {
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
+    if(this.connectedUser.role != 'SuperAdmin' )
       this._router.navigate(["/login"]);
   }
 }
