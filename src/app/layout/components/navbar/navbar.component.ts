@@ -178,7 +178,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // get the currentUser details from localStorage
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'))
 
-    this.connectedUser = await this.userService.getUser( + localStorage.getItem('connected'))
+
 
     // Subscribe to the config changes
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
@@ -197,6 +197,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
       }
     })
 
+
     // Horizontal Layout Only: Add class fixed-top to navbar below large screen
     if (this.coreConfig.layout.type == 'horizontal') {
       // On every media(screen) change
@@ -213,7 +214,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     // Set the selected language from default languageOptions
     this.selectedLanguage = _.find(this.languageOptions, {
       id: this._translateService.currentLang
-    })
+    }) ;
+      if(localStorage.getItem('connected') != 'no')
+          this.connectedUser = await this.userService.getUser( + localStorage.getItem('connected'));
   }
 
   /**
