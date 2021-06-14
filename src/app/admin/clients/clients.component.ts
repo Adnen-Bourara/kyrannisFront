@@ -163,7 +163,7 @@ export class ClientsComponent implements OnInit {
     if (this.response == 'username already used')
       return;
 
-    await this.userService.editClient(this.userToEdit,this.selectedCompany,this.selectedCompany);
+    await this.userService.editClient(this.userToEdit,this.selectedCompany,this.selectedAssistant);
     this.ngOnInit();
   }
 
