@@ -93,7 +93,6 @@ export class ClientFileDetailsComponent implements OnInit {
   async onGetFile(){
     this.fichier = await this.fichierService.getById( + localStorage.getItem("idFichier"));
     console.log(this.fichier);
-    this.client = await this.userService.getUser( + localStorage.getItem('idClient') );
 
     this.listComment = await this.commentaireService.getCommentsByFileId( + localStorage.getItem("idFichier"));
 

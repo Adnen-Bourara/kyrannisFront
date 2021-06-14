@@ -126,7 +126,7 @@ export class ClientsComponent implements OnInit {
     await this.userService.saveClient(this.userToAdd, this.selectedCompany, this.selectedAssistant);
 
     console.log("done");
- //  this.ngOnInit();
+  this.ngOnInit();
   }
 
   GetInitials(firstname: string, lastname: string) {
