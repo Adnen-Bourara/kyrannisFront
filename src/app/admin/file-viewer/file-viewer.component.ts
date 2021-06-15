@@ -101,6 +101,13 @@ async  ngOnInit(){
     this.files = await this.fichierService.getFichiersByClientId(this.idClient);
   }
 
+ async filterListFile(categorie: string)
+  {   this.files = await this.fichierService.getFichiersByClientId(this.idClient);
+  if (categorie != 'ALL')
+  this.files = this.files.filter(value => value.categorie == categorie);
+
+  }
+
 
   /**
    * Toggle the sidebar

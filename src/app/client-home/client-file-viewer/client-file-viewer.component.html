@@ -26,6 +26,15 @@
                         class="form-control ml-25"
                 /></label>
             </div>
+            <div
+                    class=" d-flex align-items-center justify-content-end float-left mt-1 mb-1 ">
+                <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('ALL')" rippleEffect>ALL</button>
+                <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('Achat')" rippleEffect>Achat</button>
+                <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('Vente')" rippleEffect>Vente</button>
+                <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('Banque')" rippleEffect>Banque</button>
+                <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('Caisse')" rippleEffect>Caisse</button>
+                <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('Autres')" rippleEffect>Autres</button>
+            </div>
             <button
                     type="button"
                     class="btn btn-relief-success float-right col-3 mt-1"

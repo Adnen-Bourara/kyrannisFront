@@ -91,6 +91,14 @@ export class ClientFileViewerComponent implements OnInit {
     this.client = await this.userService.getUser(this.connectedUser.id);
     this.files = await this.fichierService.getFichiersByClientId(this.connectedUser.id);
   }
+
+  async filterListFile(categorie: string)
+  {   this.files = await this.fichierService.getFichiersByClientId(this.idClient);
+    if (categorie != 'ALL')
+      this.files = this.files.filter(value => value.categorie == categorie);
+
+  }
+
   toggleSidebar(key): void {
     this._coreSidebarService.getSidebarRegistry(key).toggleOpen();
   }
