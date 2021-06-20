@@ -22,6 +22,10 @@ export class MessageService {
     return this.httpClient.get<User[]>(this.url + 'getListConversation/' + idUser).toPromise();
   }
 
+  async checkIfNewMessage(idUser1 : number , idUser2: number) {
+    return this.httpClient.get<Message[]>(this.url + 'CheckSeen/' + idUser1 + '/' + idUser2  ).toPromise();
+  }
+
 
 
 }

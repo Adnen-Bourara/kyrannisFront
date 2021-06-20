@@ -48,11 +48,11 @@
         <div class="chat-info flex-grow-1">
           <h5 class="mb-0">{{ chatUser.firstName }}</h5>
           <p class="card-text text-truncate">
-            {{ chatUser.id }}
+            {{ chatUser.role }}
           </p>
         </div>
-        <div class="chat-meta text-nowrap">
-          <small class="float-right mb-25 chat-time">4:14 PM</small>
+        <div *ngIf="chatUser['new'] == 'True'" class="chat-meta text-nowrap">
+          <small class="float-right mb-25 chat-time" style="color: #ff4f0d">New Message !</small>
         </div>
       </li>
 

@@ -93,7 +93,7 @@ export class ClientFileViewerComponent implements OnInit {
   }
 
   async filterListFile(categorie: string)
-  {   this.files = await this.fichierService.getFichiersByClientId(this.idClient);
+  {   this.files = await this.fichierService.getFichiersByClientId(this.connectedUser.id);
     if (categorie != 'ALL')
       this.files = this.files.filter(value => value.categorie == categorie);
 

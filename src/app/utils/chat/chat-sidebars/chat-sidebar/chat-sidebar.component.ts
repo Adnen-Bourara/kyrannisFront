@@ -21,6 +21,7 @@ export class ChatSidebarComponent implements OnInit , OnChanges {
   public chats;
   public selectedIndex = null;
   public idConnected;
+  public receivedMessages =[];
 
 
 
@@ -83,6 +84,16 @@ export class ChatSidebarComponent implements OnInit , OnChanges {
 
 
       this.chatUsers = await this.messageService.getConversations( this.idConnected );
+      for (const value of this.chatUsers) {
+        this.receivedMessages = await this.messageService.checkIfNewMessage(value.id, this.idConnected);
+        for (const a of this.receivedMessages) {
+          if (a['seen'] == 'False')
+            this.chatUsers[this.chatUsers.indexOf(value)]['new'] = 'True';
+        }
+      }
+    console.log(this.chatUsers);
+
+
 
     // Subscribe to selected Chats
     this._chatService.onSelectedChatChange.subscribe(res => {
@@ -97,5 +108,13 @@ export class ChatSidebarComponent implements OnInit , OnChanges {
 
   async ngOnChanges(changes: SimpleChanges){
     this.chatUsers = await this.messageService.getConversations( this.idConnected );
+    for (const value of this.chatUsers) {
+      this.receivedMessages = await this.messageService.checkIfNewMessage(value.id, this.idConnected);
+      for (const a of this.receivedMessages) {
+        if (a['seen'] == 'False')
+          this.chatUsers[this.chatUsers.indexOf(value)]['new'] = 'True';
+      }
+    }
+    console.log(this.chatUsers);
   }
 }

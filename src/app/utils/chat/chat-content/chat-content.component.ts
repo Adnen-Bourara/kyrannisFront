@@ -76,10 +76,7 @@ export class ChatContentComponent implements OnInit, OnChanges {
      this.date2 = new Date(b.dateEnvoie) ;
       return this.date1 - this.date2
       });
-      this.chatMessage = new Message();
     }
-
-    console.log(this.chats);
 
   }
 
@@ -90,6 +87,7 @@ export class ChatContentComponent implements OnInit, OnChanges {
 
   async sendMessage() {
    this.chatMessage.dateEnvoie = new Date().toString();
+   this.chatMessage.seen = 'False';
   this.newChat = await this.messageService.sendMessage(this.chatMessage, this.userProfile.id, this.chatUser.id);
 
   this.chats.push(this.newChat);
