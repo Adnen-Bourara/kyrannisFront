@@ -7,24 +7,6 @@
 <div>
   <div class="panel-body">
     <div class="container mt-3">
-      <div
-        class="
-          d-flex
-          align-items-center
-          justify-content-end
-          float-left
-          col-3
-          mt-1
-          mb-1
-        "
-      >
-        <label class="d-flex align-items-center"
-          >Search<input
-            type="search"
-            placeholder="Search"
-            class="form-control ml-25"
-        /></label>
-      </div>
       <button
               type="button"
               class="btn btn-relief-success float-right col-3 mt-1"
@@ -35,9 +17,7 @@
     </div>
   </div>
   <div class="container mt-3">
-    <div class="panel panel-primary">
-      <div class="panel-body">
-        <div class="table-responsive">
+
           <table class="table">
             <thead class="thead-light">
               <tr>
@@ -113,13 +93,7 @@
                           ><span [data-feather]="'delete'" class="mr-1"></span
                           >Supprimer</a
                         >
-                        <a ngbDropdownItem href="javascript:void(0)"
-                          ><span
-                            [data-feather]="'alert-octagon'"
-                            class="mr-1"
-                          ></span
-                          >Signaler</a
-                        >
+
                       </div>
                     </div>
                   </div>
@@ -127,33 +101,9 @@
               </tr>
             </tbody>
           </table>
-
-          <div class="text-center">
-            <ngb-pagination
-              [collectionSize]="20"
-              [(page)]="pageBasicText"
-              aria-label="Custom pagination"
-              class="d-flex justify-content-around mt-3"
-            >
-              <ng-template ngbPaginationPrevious
-                ><span
-                  [data-feather]="'chevron-left'"
-                  [class]="'font-weight-bolde'"
-                ></span
-                >Prev
-              </ng-template>
-              <ng-template ngbPaginationNext
-                >Next<span
-                  [data-feather]="'chevron-right'"
-                  [class]="'font-weight-bolder'"
-                ></span>
-              </ng-template>
-            </ngb-pagination>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
+
+
 </div>
 
 

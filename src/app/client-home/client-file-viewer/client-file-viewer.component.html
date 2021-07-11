@@ -8,24 +8,7 @@
 <div>
     <div class="panel-body">
         <div class="container mt-3">
-            <div
-                    class="
-          d-flex
-          align-items-center
-          justify-content-end
-          float-left
-          col-3
-          mt-1
-          mb-1
-        "
-            >
-                <label class="d-flex align-items-center"
-                >Chercher<input
-                        type="search"
-                        placeholder="Chercher Fichier"
-                        class="form-control ml-25"
-                /></label>
-            </div>
+
             <div
                     class=" d-flex align-items-center justify-content-end float-left mt-1 mb-1 ">
                 <button type="button" class="btn btn-outline-primary round" (click)="filterListFile('ALL')" rippleEffect>ALL</button>
@@ -121,29 +104,6 @@
                         </tr>
                         </tbody>
                     </table>
-
-                    <div class="text-center">
-                        <ngb-pagination
-                                [collectionSize]="50"
-                                [(page)]="pageBasicText"
-                                aria-label="Custom pagination"
-                                class="d-flex justify-content-around mt-3"
-                        >
-                            <ng-template ngbPaginationPrevious
-                            ><span
-                                    [data-feather]="'chevron-left'"
-                                    [class]="'font-weight-bolde'"
-                            ></span
-                            >Prev
-                            </ng-template>
-                            <ng-template ngbPaginationNext
-                            >Next<span
-                                    [data-feather]="'chevron-right'"
-                                    [class]="'font-weight-bolder'"
-                            ></span>
-                            </ng-template>
-                        </ngb-pagination>
-                    </div>
                 </div>
             </div>
         </div>

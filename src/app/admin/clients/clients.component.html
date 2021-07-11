@@ -7,24 +7,7 @@
 <div>
   <div class="panel-body">
     <div class="container mt-3">
-      <div
-              class="
-          d-flex
-          align-items-center
-          justify-content-end
-          float-left
-          col-3
-          mt-1
-          mb-1
-        "
-      >
-        <label class="d-flex align-items-center"
-        >Search<input
-                type="search"
-                placeholder="Search"
-                class="form-control ml-25"
-        /></label>
-      </div>
+
       <button
               type="button"
               class="btn btn-relief-success float-right col-3 mt-1"
@@ -111,13 +94,7 @@
                       ><span [data-feather]="'award'" class="mr-1"></span
                       >Profil</a
                       >
-                      <a ngbDropdownItem href="javascript:void(0)"
-                      ><span
-                              [data-feather]="'alert-octagon'"
-                              class="mr-1"
-                      ></span
-                      >Signaler</a
-                      >
+
                     </div>
                   </div>
                 </div>
@@ -126,28 +103,7 @@
             </tbody>
           </table>
 
-          <div class="text-center">
-            <ngb-pagination
-                    [collectionSize]="20"
-                    [(page)]="pageBasicText"
-                    aria-label="Custom pagination"
-                    class="d-flex justify-content-around mt-3"
-            >
-              <ng-template ngbPaginationPrevious
-              ><span
-                      [data-feather]="'chevron-left'"
-                      [class]="'font-weight-bolde'"
-              ></span
-              >Prev
-              </ng-template>
-              <ng-template ngbPaginationNext
-              >Next<span
-                      [data-feather]="'chevron-right'"
-                      [class]="'font-weight-bolder'"
-              ></span>
-              </ng-template>
-            </ngb-pagination>
-          </div>
+
         </div>
       </div>
     </div>
@@ -572,41 +528,11 @@
                       </h4>
                       <span class="card-text">{{ userToEdit.email }}</span>
                     </div>
-                    <div class="d-flex flex-wrap">
-                      <button
-                        (click)="modalClose(ProfileClient)"
-                        (click)="modalOpen(EditClient)"
-                        (click)="goToModal(userToEdit)"
-                        class="btn btn-primary"
-                        rippleEffect
-                      >
-                        Editer
-                      </button>
-                      <button
-                        (click)="onDeleteUser(a)"
-                        class="btn btn-outline-danger ml-1"
-                        rippleEffect
-                      >
-                        Supprimer
-                      </button>
-                    </div>
+
                   </div>
                 </div>
               </div>
-              <div class="d-flex align-items-center user-total-numbers">
-                <div class="d-flex align-items-center mt-2">
-                  <div class="color-box bg-light-success">
-                    <i
-                      [data-feather]="'trending-up'"
-                      [class]="'text-success'"
-                    ></i>
-                  </div>
-                  <div class="ml-1 mt-2">
-                    <h5 class="mb-0">24</h5>
-                    <small>Nombre de Fichiers</small>
-                  </div>
-                </div>
-              </div>
+
             </div>
             <div class="col-xl-6 col-lg-12 mt-2 mt-xl-0">
               <div class="user-info-wrapper">

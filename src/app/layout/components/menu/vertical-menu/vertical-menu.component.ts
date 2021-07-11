@@ -8,6 +8,8 @@ import { PerfectScrollbarDirective } from 'ngx-perfect-scrollbar';
 import { CoreConfigService } from '@core/services/config.service';
 import { CoreMenuService } from '@core/components/core-menu/core-menu.service';
 import { CoreSidebarService } from '@core/components/core-sidebar/core-sidebar.service';
+import {User} from '../../../../utils/common/login/user';
+import {UserServiceService} from '../../../../utils/common/login/user-service.service';
 
 @Component({
   selector: 'vertical-menu',
@@ -20,6 +22,7 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   menu: any;
   isCollapsed: boolean;
   isScrolled: boolean = false;
+  public connectedUser = new User();
 
   // Private
   private _unsubscribeAll: Subject<any>;
@@ -36,7 +39,8 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
     private _coreConfigService: CoreConfigService,
     private _coreMenuService: CoreMenuService,
     private _coreSidebarService: CoreSidebarService,
-    private _router: Router
+    private _router: Router,
+    private userService: UserServiceService
   ) {
     // Set the private defaults
     this._unsubscribeAll = new Subject();
@@ -50,11 +54,12 @@ export class VerticalMenuComponent implements OnInit, OnDestroy {
   /**
    * On Init
    */
-  ngOnInit(): void {
+ async ngOnInit() {
     // Subscribe config change
     this._coreConfigService.config.pipe(takeUntil(this._unsubscribeAll)).subscribe(config => {
       this.coreConfig = config;
     });
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
 
     this.isCollapsed = this._coreSidebarService.getSidebarRegistry('menu').collapsed;
 

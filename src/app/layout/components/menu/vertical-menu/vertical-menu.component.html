@@ -3,7 +3,19 @@
   <ul class="nav navbar-nav flex-row">
     <li class="nav-item mr-auto">
       <!-- App Branding -->
-      <a class="navbar-brand" [routerLink]="['/']">
+      <a class="navbar-brand" *ngIf="connectedUser.role == 'SuperAdmin' " [routerLink]="['/admin/Home']">
+        <span class="brand-logo">
+          <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" />
+        </span>
+        <h2 class="brand-text mb-0">{{ coreConfig.app.appName }}</h2>
+      </a>
+      <a class="navbar-brand"  *ngIf="connectedUser.role == 'Assistant' "  [routerLink]="['/assistants/Home']">
+        <span class="brand-logo">
+          <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" />
+        </span>
+        <h2 class="brand-text mb-0">{{ coreConfig.app.appName }}</h2>
+      </a>
+      <a class="navbar-brand"  *ngIf="connectedUser.role == 'Client' "  [routerLink]="['/clients/Home']">
         <span class="brand-logo">
           <img src="{{ coreConfig.app.appLogoImage }}" alt="brand-logo" />
         </span>

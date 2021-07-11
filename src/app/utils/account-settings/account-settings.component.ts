@@ -12,6 +12,8 @@ import { CoreConfigService } from "@core/services/config.service";
 import { CoreMenuService } from "@core/components/core-menu/core-menu.service";
 import { menu } from "app/menu/menu";
 import { assistantMenu } from "app/menu/assistantMenu";
+import {User} from '../common/login/user';
+import {UserServiceService} from '../common/login/user-service.service';
 @Component({
   selector: "app-account-settings",
   templateUrl: "./account-settings.component.html",
@@ -25,15 +27,13 @@ export class AccountSettingsComponent implements OnInit {
   public birthDateOptions: FlatpickrOptions = {
     altInput: true,
   };
-  public passwordTextTypeOld = false;
-  public passwordTextTypeNew = false;
-  public passwordTextTypeRetype = false;
-  public breadcrumbDefault: Breadcrumb;
+  public passwordTextTypeNew: any;
+  public passwordTextTypeRetype : any;
+
 
   // private
-  private _unsubscribeAll: Subject<any>;
   menu: any;
-
+  public connectedUser = new User();
   /**
    * Constructor
    *
@@ -43,7 +43,9 @@ export class AccountSettingsComponent implements OnInit {
     private _accountSettingsService: AccountSettingsService,
     private router: Router,
     private _coreConfigService: CoreConfigService,
-    private _coreMenuService: CoreMenuService
+    private _coreMenuService: CoreMenuService,
+    private userService: UserServiceService,
+    private _router: Router,
   ) {
     let queryString = this.router.url;
     console.log(queryString);
@@ -76,20 +78,7 @@ export class AccountSettingsComponent implements OnInit {
       default:
       // code block
     }
-    this._unsubscribeAll = new Subject();
-    this.breadcrumbDefault = {
-      links: [
-        {
-          name: "Home",
-          isLink: true,
-          link: "/",
-        },
-        {
-          name: "Paramétres du Compte",
-          isLink: false,
-        },
-      ],
-    };
+
   }
 
   // Public Methods
@@ -98,23 +87,8 @@ export class AccountSettingsComponent implements OnInit {
   /**
    * Toggle Password Text Type Old
    */
-  togglePasswordTextTypeOld() {
-    this.passwordTextTypeOld = !this.passwordTextTypeOld;
-  }
 
-  /**
-   * Toggle Password Text Type New
-   */
-  togglePasswordTextTypeNew() {
-    this.passwordTextTypeNew = !this.passwordTextTypeNew;
-  }
 
-  /**
-   * Toggle Password Text Type Retype
-   */
-  togglePasswordTextTypeRetype() {
-    this.passwordTextTypeRetype = !this.passwordTextTypeRetype;
-  }
 
   // Lifecycle Hooks
   // -----------------------------------------------------------------------------------------------------
@@ -122,13 +96,17 @@ export class AccountSettingsComponent implements OnInit {
   /**
    * On init
    */
-  ngOnInit() {
-    this._accountSettingsService.onDatatablessChanged
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((response) => {
-        this.data = response;
-      });
+  async ngOnInit() {
+    this.connectedUser = await  this.userService.getUser( + localStorage.getItem('connected')) ;
 
-    // content header
+  }
+
+ async editConnected()
+  {
+    await this.userService.editUser(this.connectedUser);
+  }
+
+  async updatePassword() {
+    await this.userService.changePassword(this.connectedUser.id, this.passwordTextTypeNew);
   }
 }
