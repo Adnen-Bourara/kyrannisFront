@@ -24,7 +24,7 @@ export class CompanyService {
 
   async editCompany(params: any) {
     return this.httpClient
-      .put<Company>(this.url + "Company/create", params)
+      .post<Company>(this.url + "Company/create", params)
       .toPromise();
   }
 
